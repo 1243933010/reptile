@@ -271,7 +271,7 @@ router.post('/participateTeam',async (ctx:any)=>{  //我参与的团队
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {id,status,userId,teamId} = ctx.request.body;
+  let {id,status,userId,teamId} = ctx.request.body
 
   console.log(ctx.request.body)
   // let status = await DB.find('team',{"memberList.id":112});
