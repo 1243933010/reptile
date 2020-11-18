@@ -290,7 +290,7 @@ router.post('/searchUser', function (ctx) { return __awaiter(void 0, void 0, voi
     });
 }); });
 router.post('/inviteJoin', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, userId, teamId, message, teamData, i, name_1, inviteJoinHistory, _i, _b, iterator, len, obj, status_1, obj, status_2;
+    var _a, userId, teamId, inviteId, message, teamData, i, name_1, inviteJoinHistory, _i, _b, iterator, len, obj, status_1, obj, status_2;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
@@ -298,14 +298,21 @@ router.post('/inviteJoin', function (ctx) { return __awaiter(void 0, void 0, voi
                     ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
                     return [2 /*return*/, false];
                 }
-                _a = ctx.request.body, userId = _a.userId, teamId = _a.teamId;
+                _a = ctx.request.body, userId = _a.userId, teamId = _a.teamId, inviteId = _a.inviteId;
                 message = '';
                 return [4 /*yield*/, DB.find('team', { id: Number(teamId) })];
             case 1:
                 teamData = _c.sent();
+                // console.log(teamData[0].userId,userId,'----205')
+                // console.log( teamData[0].userId!=userId,'----206')
+                // console.log(ctx.request.body,'----207')
+                if (teamData[0].userId != userId) {
+                    ctx.body = { code: returnCode.error, message: '你不是该团队的队长', data: null };
+                    return [2 /*return*/, false];
+                }
                 if (!teamData.length) return [3 /*break*/, 3];
                 for (i = 0; i < teamData[0].memberList.length; i++) { //标注
-                    if (teamData[0].memberList[i].userId === userId) {
+                    if (teamData[0].memberList[i].userId === inviteId) {
                         ctx.body = { code: returnCode.error, message: '邀请人已经在团队里面', data: null };
                         return [2 /*return*/];
                     }
@@ -318,7 +325,7 @@ router.post('/inviteJoin', function (ctx) { return __awaiter(void 0, void 0, voi
             case 3:
                 ctx.body = { code: returnCode.error, message: '未找到此团队' };
                 _c.label = 4;
-            case 4: return [4 /*yield*/, DB.find('inviteJoinHistory', { userId: userId })];
+            case 4: return [4 /*yield*/, DB.find('inviteJoinHistory', { userId: inviteId })];
             case 5:
                 inviteJoinHistory = _c.sent();
                 if (!inviteJoinHistory.length) return [3 /*break*/, 7];
@@ -330,9 +337,9 @@ router.post('/inviteJoin', function (ctx) { return __awaiter(void 0, void 0, voi
                     }
                 }
                 len = inviteJoinHistory[0].list.length + 1;
-                obj = { id: len, teamId: teamId, status: '', message: message };
+                obj = { id: len, teamId: teamId, status: '', message: message, teamName: teamData[0].teamName };
                 inviteJoinHistory[0].list.unshift(obj);
-                return [4 /*yield*/, DB.update('inviteJoinHistory', { userId: userId }, { list: inviteJoinHistory[0].list })];
+                return [4 /*yield*/, DB.update('inviteJoinHistory', { userId: inviteId }, { list: inviteJoinHistory[0].list })];
             case 6:
                 status_1 = _c.sent();
                 if (status_1.result.n) {
@@ -340,7 +347,7 @@ router.post('/inviteJoin', function (ctx) { return __awaiter(void 0, void 0, voi
                 }
                 return [3 /*break*/, 9];
             case 7:
-                obj = { userId: userId, list: [{ id: 1, teamId: teamId, status: '', message: message }] };
+                obj = { userId: inviteId, list: [{ id: 1, teamId: teamId, status: '', message: message }] };
                 return [4 /*yield*/, DB.insert('inviteJoinHistory', obj)];
             case 8:
                 status_2 = _c.sent();
@@ -376,27 +383,76 @@ router.post('/beInvited', function (ctx) { return __awaiter(void 0, void 0, void
     });
 }); });
 router.post('/processInvitation', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        if (!verificationToken(ctx).flog) {
-            ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
-            return [2 /*return*/, false];
+    var _a, id, status, userId, teamId, username, data, i, msg, teamData, obj, res;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                _a = ctx.request.body, id = _a.id, status = _a.status, userId = _a.userId, teamId = _a.teamId, username = _a.username;
+                return [4 /*yield*/, DB.find('inviteJoinHistory', { userId: userId })];
+            case 1:
+                data = _b.sent();
+                i = 0;
+                _b.label = 2;
+            case 2:
+                if (!(i < data[0].list.length)) return [3 /*break*/, 8];
+                if (!(id == data[0].list[i].id)) return [3 /*break*/, 7];
+                data[0].list[i].status = status;
+                return [4 /*yield*/, DB.update('inviteJoinHistory', { userId: userId }, { list: data[0].list })];
+            case 3:
+                msg = _b.sent();
+                if (!msg.result.n) {
+                    ctx.body = { code: returnCode.error, message: '数据更新失败', data: null };
+                    return [2 /*return*/];
+                }
+                if (!(status === '1')) return [3 /*break*/, 6];
+                return [4 /*yield*/, DB.find('team', { id: Number(teamId) })];
+            case 4:
+                teamData = _b.sent();
+                obj = { userId: userId, username: username };
+                teamData[0].memberList.push(obj);
+                return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, { memberList: teamData[0].memberList })];
+            case 5:
+                res = _b.sent();
+                console.log(res.result);
+                if (res.result.n) {
+                    ctx.body = { code: returnCode.success, message: 'success', data: null };
+                }
+                else {
+                    ctx.body = { code: returnCode.error, message: '数据更新失败', data: null };
+                }
+                return [3 /*break*/, 7];
+            case 6:
+                ctx.body = { code: returnCode.success, message: "\u4F60\u5DF2\u62D2\u7EDD\u4E86" + data[0].list[i].teamName + "\u56E2\u961F\u7684\u9080\u8BF7" };
+                return [2 /*return*/, false];
+            case 7:
+                i++;
+                return [3 /*break*/, 2];
+            case 8: return [2 /*return*/];
         }
-        console.log(ctx.request.body);
-        return [2 /*return*/];
     });
 }); });
 router.post('/participateTeam', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, id, status, userId, teamId;
-    return __generator(this, function (_b) {
-        if (!verificationToken(ctx).flog) {
-            ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
-            return [2 /*return*/, false];
+    var userId, data;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                userId = ctx.request.body.userId;
+                console.log(ctx.request.body);
+                return [4 /*yield*/, DB.find('team', { "memberList.userId": userId }, { _id: 0, flog: 0, taskList: 0, memberList: 0, userId: 0 })];
+            case 1:
+                data = _a.sent();
+                console.log(data);
+                ctx.body = { code: returnCode.success, message: 'success', data: data };
+                return [2 /*return*/];
         }
-        _a = ctx.request.body, id = _a.id, status = _a.status, userId = _a.userId, teamId = _a.teamId;
-        console.log(ctx.request.body);
-        // let status = await DB.find('team',{"memberList.id":112});
-        console.log(status);
-        return [2 /*return*/];
     });
 }); });
 module.exports = router.routes();

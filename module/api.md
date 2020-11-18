@@ -5,6 +5,7 @@
 
 /api/updateProfile 更改名字和头像
 {username:'test',avatar:'url路径'} 可以单独传其中一个
+目前更改名字不会更新team和inviteJoinHistory 集合的名字数据
 
 /tsc/changePwd 修改密码
 {pwd:'',newPwd:''} 原密码，新密码
@@ -63,8 +64,10 @@ offset第几页，limit每页数量
 
 
      /tsc/inviteJoin       邀请加入团队
-    {userId被邀请人id,teamId:任务团队id}
-    {userId:'',teamId:''}
+    {userId自己id,teamId:任务团队id，inviteId被邀请人id}
+    {userId:'',teamId:''，inviteId：""}
+
+     <!-- /xx/xx            邀请记录接口 -->
 
     /tsc/beInvited       被邀请记录接口
     {userId:''}
@@ -73,13 +76,15 @@ offset第几页，limit每页数量
 
 
     /tsc/processInvitation  处理邀请
-    {status:'1',id:'1',userId:'',teamId:''}
-    status为"1"是同意，"0"是拒绝,id为请求信息的id,userId用户id，登录有
+    {status:'1',id:'1',userId:'',teamId:'',username:''}
+    status为"1"是同意，"0"是拒绝,id为请求信息的id,userId用户id，登录有，teamId:团队id
 
 
 
-                      我参与得任务团队
-                     
+    /tsc/participateTeam           我参与得任务团队
+    {userId}
+
+    
 
                        删除任务团队
 

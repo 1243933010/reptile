@@ -163,8 +163,8 @@ router.post('/myTeam', async (ctx: any) => {   //我的团队
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {userId,useranme} = ctx.request.body;
-  let res = await DB.find('team', { userId:DB.getID(userId)});
+  let { userId, useranme } = ctx.request.body;
+  let res = await DB.find('team', { userId: DB.getID(userId) });
   res.forEach((val: any, ind: Number) => {
     val.username = useranme;
   });
@@ -199,84 +199,118 @@ router.post('/inviteJoin', async (ctx: any) => {   //邀请加入(内部有未�
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {userId,teamId} = ctx.request.body;
+  let { userId, teamId,inviteId } = ctx.request.body;
   let message = '';
-  let teamData = await DB.find('team',{id:Number(teamId)});
-  if(teamData.length){
-    for(let i = 0;i<teamData[0].memberList.length;i++){ //标注
-      if(teamData[0].memberList[i].userId===userId){
-        ctx.body = { code: returnCode.error, message: '邀请人已经在团队里面',data:null };
+  let teamData = await DB.find('team', { id: Number(teamId) });
+  // console.log(teamData[0].userId,userId,'----205')
+  // console.log( teamData[0].userId!=userId,'----206')
+  // console.log(ctx.request.body,'----207')
+  if(teamData[0].userId!=userId){
+    ctx.body = { code: returnCode.error, message: '你不是该团队的队长', data: null };
+    return false;
+  }
+
+  if (teamData.length) {
+    for (let i = 0; i < teamData[0].memberList.length; i++) { //标注
+      if (teamData[0].memberList[i].userId === inviteId) {
+        ctx.body = { code: returnCode.error, message: '邀请人已经在团队里面', data: null };
         return
       }
     }
-    let name = await DB.find('user',{_id:DB.getID(teamData[0].userId)},{username:1})
+    let name = await DB.find('user', { _id: DB.getID(teamData[0].userId) }, { username: 1 })
     message = `${name[0].username}邀请你加入${teamData[0].teamName}`;
-  }else{
+  } else {
     ctx.body = { code: returnCode.error, message: '未找到此团队' };
   }
-  let inviteJoinHistory = await DB.find('inviteJoinHistory',{userId:userId});
-  if(inviteJoinHistory.length){
+  let inviteJoinHistory = await DB.find('inviteJoinHistory', { userId: inviteId });
+  if (inviteJoinHistory.length) {
     for (const iterator of inviteJoinHistory[0].list) {
-      if(teamId===iterator.teamId&&!iterator.status){
-        ctx.body = { code: returnCode.error, message: '已发送过请求，对方还未回复',data:null };
+      if (teamId === iterator.teamId && !iterator.status) {
+        ctx.body = { code: returnCode.error, message: '已发送过请求，对方还未回复', data: null };
         return false
       }
     }
-    let len = inviteJoinHistory[0].list.length+1;
-    let obj = {id:len,teamId,status:'',message}
+    let len = inviteJoinHistory[0].list.length + 1;
+    let obj = { id: len, teamId, status: '', message, teamName: teamData[0].teamName }; //标注teamName
     inviteJoinHistory[0].list.unshift(obj);
-    let status = await DB.update('inviteJoinHistory',{userId:userId},{list:inviteJoinHistory[0].list});
-    if(status.result.n){
-      ctx.body = { code: returnCode.success, message: '已向该用户发送邀请',data:null };
+    let status = await DB.update('inviteJoinHistory', { userId: inviteId }, { list: inviteJoinHistory[0].list });
+    if (status.result.n) {
+      ctx.body = { code: returnCode.success, message: '已向该用户发送邀请', data: null };
     }
-  }else{
-    let obj = {userId,list:[{id:1,teamId,status:'',message}]};
-    let status = await DB.insert('inviteJoinHistory',obj)
-    if(status.result.n){
-      ctx.body = { code: returnCode.success, message: '已向该用户发送邀请',data:null };
+  } else {
+    let obj = { userId:inviteId, list: [{ id: 1, teamId, status: '', message }] };
+    let status = await DB.insert('inviteJoinHistory', obj)
+    if (status.result.n) {
+      ctx.body = { code: returnCode.success, message: '已向该用户发送邀请', data: null };
     }
-    
+
   }
   // console.log(userData);
 })
 
 
-router.post('/beInvited',async (ctx:any)=>{ //被邀请记录接口
+router.post('/beInvited', async (ctx: any) => { //被邀请记录接口
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {userId} = ctx.request.body;
-  let history = await DB.find('inviteJoinHistory',{userId},{_id:0,userId:0});
-  if(history.length){
-    ctx.body = { code: returnCode.success, message: 'success',data:history[0].list };
-  }else{
-    ctx.body = { code: returnCode.success, message: '暂时没有数据',data:history };
+  let { userId } = ctx.request.body;
+  let history = await DB.find('inviteJoinHistory', { userId }, { _id: 0, userId: 0 });
+  if (history.length) {
+    ctx.body = { code: returnCode.success, message: 'success', data: history[0].list };
+  } else {
+    ctx.body = { code: returnCode.success, message: '暂时没有数据', data: history };
   }
 })
 
 
-router.post('/processInvitation',async (ctx:any)=>{  //处理邀请
+router.post('/processInvitation', async (ctx: any) => {  //处理邀请
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  
-  console.log(ctx.request.body);
+  let { id, status, userId, teamId, username } = ctx.request.body;
+  let data = await DB.find('inviteJoinHistory', { userId })
+  for (let i = 0; i < data[0].list.length; i++) {
+    if (id == data[0].list[i].id) {
+      data[0].list[i].status = status;
+      let msg = await DB.update('inviteJoinHistory', { userId }, { list: data[0].list });
+      if (!msg.result.n) {
+        ctx.body = { code: returnCode.error, message: '数据更新失败', data: null };
+        return
+      }
+      if (status === '1') {
+        let teamData = await DB.find('team', { id: Number(teamId) });
+        let obj = { userId, username };
+        teamData[0].memberList.push(obj);
+        let res = await DB.update('team', {id:Number(teamId) }, { memberList: teamData[0].memberList });
+         console.log(res.result)
+        if (res.result.n) {
+          ctx.body = { code: returnCode.success, message: 'success', data: null };
+        } else {
+          ctx.body = { code: returnCode.error, message: '数据更新失败', data: null };
+        }
+      } else {
+        ctx.body = { code: returnCode.success, message: `你已拒绝了${data[0].list[i].teamName}团队的邀请` };
+        return false;
+      }
+    }
+  }
+  // console.log(ctx.request.body);
 
 })
 
-router.post('/participateTeam',async (ctx:any)=>{  //我参与的团队
+router.post('/participateTeam', async (ctx: any) => {  //我参与的团队
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {id,status,userId,teamId} = ctx.request.body
+  let {userId} = ctx.request.body
 
   console.log(ctx.request.body)
-  // let status = await DB.find('team',{"memberList.id":112});
-  console.log(status)
-
+  let data = await DB.find('team',{"memberList.userId":userId},{_id:0,flog:0,taskList:0,memberList:0,userId:0});
+  console.log(data)
+  ctx.body = { code: returnCode.success, message: 'success', data };
 })
 module.exports = router.routes();
 
