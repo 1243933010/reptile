@@ -208,6 +208,7 @@ router.post('/createTeam', function (ctx) { return __awaiter(void 0, void 0, voi
                 ctx.request.body.id = status.length + 1; //自增id
                 ctx.request.body.taskList = []; //任务列表
                 ctx.request.body.memberList = []; //成员列表
+                ctx.request.body.flog = true; //默认未删除为true
                 ctx.request.body.userId = DB.getID(data[0]._id); //队长id
                 return [4 /*yield*/, DB.insert('team', ctx.request.body)];
             case 3:
@@ -250,9 +251,10 @@ router.post('/myTeam', function (ctx) { return __awaiter(void 0, void 0, void 0,
                     return [2 /*return*/, false];
                 }
                 _a = ctx.request.body, userId = _a.userId, useranme = _a.useranme;
-                return [4 /*yield*/, DB.find('team', { userId: DB.getID(userId) })];
+                return [4 /*yield*/, DB.find('team', { userId: DB.getID(userId), flog: true }, { flog: 0 })];
             case 1:
                 res = _b.sent();
+                console.log(res);
                 res.forEach(function (val, ind) {
                     val.username = useranme;
                 });
@@ -451,6 +453,46 @@ router.post('/participateTeam', function (ctx) { return __awaiter(void 0, void 0
                 data = _a.sent();
                 console.log(data);
                 ctx.body = { code: returnCode.success, message: 'success', data: data };
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.post('/deleteTeam', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+    var teamId, data;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                teamId = ctx.request.body.teamId;
+                return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, { flog: false })];
+            case 1:
+                data = _a.sent();
+                if (data.result.n) {
+                    ctx.body = { code: returnCode.success, message: '删除成功' };
+                }
+                else {
+                    ctx.body = { code: returnCode.error, message: '删除失败' };
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.post('/transfer', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, teamId, teammateId, data;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                _a = ctx.request.body, teamId = _a.teamId, teammateId = _a.teammateId;
+                return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, { flog: false })];
+            case 1:
+                data = _b.sent();
                 return [2 /*return*/];
         }
     });

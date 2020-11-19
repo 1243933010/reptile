@@ -137,6 +137,7 @@ router.post('/createTeam', async (ctx: any) => { //创建团队
   ctx.request.body.id = status.length + 1; //自增id
   ctx.request.body.taskList = [];          //任务列表
   ctx.request.body.memberList = [];        //成员列表
+  ctx.request.body.flog = true;        //默认未删除为true
   ctx.request.body.userId = DB.getID(data[0]._id); //队长id
   let res = await DB.insert('team', ctx.request.body);
   if (res.result.n) {
@@ -164,7 +165,8 @@ router.post('/myTeam', async (ctx: any) => {   //我的团队
     return false;
   }
   let { userId, useranme } = ctx.request.body;
-  let res = await DB.find('team', { userId: DB.getID(userId) });
+  let res = await DB.find('team', { userId: DB.getID(userId), flog: true }, { flog: 0 });
+  console.log(res)
   res.forEach((val: any, ind: Number) => {
     val.username = useranme;
   });
@@ -199,13 +201,13 @@ router.post('/inviteJoin', async (ctx: any) => {   //邀请加入(内部有未�
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let { userId, teamId,inviteId } = ctx.request.body;
+  let { userId, teamId, inviteId } = ctx.request.body;
   let message = '';
   let teamData = await DB.find('team', { id: Number(teamId) });
   // console.log(teamData[0].userId,userId,'----205')
   // console.log( teamData[0].userId!=userId,'----206')
   // console.log(ctx.request.body,'----207')
-  if(teamData[0].userId!=userId){
+  if (teamData[0].userId != userId) {
     ctx.body = { code: returnCode.error, message: '你不是该团队的队长', data: null };
     return false;
   }
@@ -238,7 +240,7 @@ router.post('/inviteJoin', async (ctx: any) => {   //邀请加入(内部有未�
       ctx.body = { code: returnCode.success, message: '已向该用户发送邀请', data: null };
     }
   } else {
-    let obj = { userId:inviteId, list: [{ id: 1, teamId, status: '', message }] };
+    let obj = { userId: inviteId, list: [{ id: 1, teamId, status: '', message }] };
     let status = await DB.insert('inviteJoinHistory', obj)
     if (status.result.n) {
       ctx.body = { code: returnCode.success, message: '已向该用户发送邀请', data: null };
@@ -283,8 +285,8 @@ router.post('/processInvitation', async (ctx: any) => {  //处理邀请
         let teamData = await DB.find('team', { id: Number(teamId) });
         let obj = { userId, username };
         teamData[0].memberList.push(obj);
-        let res = await DB.update('team', {id:Number(teamId) }, { memberList: teamData[0].memberList });
-         console.log(res.result)
+        let res = await DB.update('team', { id: Number(teamId) }, { memberList: teamData[0].memberList });
+        console.log(res.result)
         if (res.result.n) {
           ctx.body = { code: returnCode.success, message: 'success', data: null };
         } else {
@@ -305,13 +307,39 @@ router.post('/participateTeam', async (ctx: any) => {  //我参与的团队
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {userId} = ctx.request.body
+  let { userId } = ctx.request.body
 
   console.log(ctx.request.body)
-  let data = await DB.find('team',{"memberList.userId":userId},{_id:0,flog:0,taskList:0,memberList:0,userId:0});
+  let data = await DB.find('team', { "memberList.userId": userId }, { _id: 0, flog: 0, taskList: 0, memberList: 0, userId: 0 });
   console.log(data)
   ctx.body = { code: returnCode.success, message: 'success', data };
 })
+
+
+router.post('/deleteTeam', async (ctx: any) => { //逻辑删除团队
+  if (!verificationToken(ctx).flog) {
+    ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
+    return false;
+  }
+  let { teamId } = ctx.request.body;
+  let data = await DB.update('team', { id: Number(teamId) }, { flog: false });
+  if (data.result.n) {
+    ctx.body = { code: returnCode.success, message: '删除成功' };
+  } else {
+    ctx.body = { code: returnCode.error, message: '删除失败' };
+  }
+})
+
+router.post('/transfer', async (ctx: any) => {  //转让团队
+  if (!verificationToken(ctx).flog) {
+    ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
+    return false;
+  }
+  let {teamId,teammateId} = ctx.request.body;
+  let data = await DB.update('team', { id: Number(teamId) }, { flog: false });
+
+})
+
 module.exports = router.routes();
 
 
