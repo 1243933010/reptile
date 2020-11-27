@@ -254,7 +254,7 @@ router.post('/myTeam', function (ctx) { return __awaiter(void 0, void 0, void 0,
                 return [4 /*yield*/, DB.find('team', { userId: DB.getID(userId), flog: true }, { flog: 0 })];
             case 1:
                 res = _b.sent();
-                console.log(res);
+                // console.log(res)
                 res.forEach(function (val, ind) {
                     val.username = useranme;
                 });
@@ -493,6 +493,84 @@ router.post('/transfer', function (ctx) { return __awaiter(void 0, void 0, void 
                 return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, { flog: false })];
             case 1:
                 data = _b.sent();
+                return [2 /*return*/];
+        }
+    });
+}); });
+/**
+ * 接收{teamId:'',userId:'',taskNmae:'',taskLabel:''}
+ * 额外添加开始时间createTime、结束时间endTime、任务状态taskStatus(默认为'0'未完成)、
+ * 任务是否领取状态isReceive(0未领取)、是否逻辑删除flog(默认为true)
+ */
+router.post('/createTeamWork', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, teamId, userId, _b, team, a, status;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                _a = ctx.request.body, teamId = _a.teamId, userId = _a.userId;
+                return [4 /*yield*/, DB.find('team', { id: Number(teamId) })];
+            case 1:
+                _b = _c.sent(), team = _b[0], a = _b.slice(1);
+                ctx.request.body.createTime = new Date().getTime();
+                ctx.request.body.endTime = null;
+                ctx.request.body.taskStatus = '0';
+                ctx.request.body.flog = true;
+                ctx.request.body.taskId = team.taskList.length + 1;
+                ctx.request.body.isReceive = '1';
+                if (team.userId.toString() === userId) { //如果是队长创建的项目未领取的状态
+                    ctx.request.body.isReceive = '0';
+                    ctx.request.body.userId = null;
+                }
+                team.taskList.unshift(ctx.request.body);
+                return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, { taskList: team.taskList })];
+            case 2:
+                status = _c.sent();
+                // console.log(status.result.n);
+                if (status.result.n) {
+                    ctx.body = { code: returnCode.success, message: '创建成功' };
+                    return [2 /*return*/];
+                }
+                ctx.body = { code: returnCode.error, message: '创建失败' };
+                return [2 /*return*/];
+        }
+    });
+}); });
+/**
+ * {teamId:'',taskId:'',userId:'';}
+ *
+ */
+router.post('/receiveTask', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, teamId, userId, taskId, _b, data, a, status;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                _a = ctx.request.body, teamId = _a.teamId, userId = _a.userId, taskId = _a.taskId;
+                console.log(teamId, userId);
+                return [4 /*yield*/, DB.find('team', { id: Number(teamId) })];
+            case 1:
+                _b = _c.sent(), data = _b[0], a = _b.slice(1);
+                data.taskList.forEach(function (val, ind) {
+                    if (val.taskId === Number(taskId)) {
+                        val.userId = userId;
+                        console.log('111');
+                    }
+                });
+                return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, { taskList: data.taskList })];
+            case 2:
+                status = _c.sent();
+                if (status.result.n) {
+                    ctx.body = { code: returnCode.success, message: '领取成功' };
+                    return [2 /*return*/];
+                }
+                ctx.body = { code: returnCode.error, message: '领取失败' };
                 return [2 /*return*/];
         }
     });

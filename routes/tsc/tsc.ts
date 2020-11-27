@@ -37,7 +37,7 @@ let verificationToken = (ctx: verificationTokenTyep): any => {
       }
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -166,7 +166,7 @@ router.post('/myTeam', async (ctx: any) => {   //我的团队
   }
   let { userId, useranme } = ctx.request.body;
   let res = await DB.find('team', { userId: DB.getID(userId), flog: true }, { flog: 0 });
-  console.log(res)
+  // console.log(res)
   res.forEach((val: any, ind: Number) => {
     val.username = useranme;
   });
@@ -339,6 +339,66 @@ router.post('/transfer', async (ctx: any) => {  //转让团队
   let data = await DB.update('team', { id: Number(teamId) }, { flog: false });
 
 })
+
+/**
+ * 接收{teamId:'',userId:'',taskNmae:'',taskLabel:''}
+ * 额外添加开始时间createTime、结束时间endTime、任务状态taskStatus(默认为'0'未完成)、
+ * 任务是否领取状态isReceive(0未领取)、是否逻辑删除flog(默认为true) 
+ */
+router.post('/createTeamWork',async (ctx:any)=>{  //创建团队任务
+  if (!verificationToken(ctx).flog) {
+    ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
+    return false;
+  }
+  let {teamId,userId} = ctx.request.body;
+  let [team,...a] = await DB.find('team',{id:Number(teamId)});
+  ctx.request.body.createTime = new Date().getTime();
+  ctx.request.body.endTime = null;
+  ctx.request.body.taskStatus = '0';
+  ctx.request.body.flog = true;
+  ctx.request.body.taskId = team.taskList.length+1;
+  ctx.request.body.isReceive = '1'; 
+  if(team.userId.toString()=== userId){//如果是队长创建的项目未领取的状态
+    ctx.request.body.isReceive = '0';
+    ctx.request.body.userId = null;
+  }
+  team.taskList.unshift(ctx.request.body);
+  let status = await DB.update('team',{id:Number(teamId)},{taskList:team.taskList});
+  // console.log(status.result.n);
+  if(status.result.n){
+    ctx.body = { code: returnCode.success, message: '创建成功' };
+    return
+  }
+  ctx.body = { code: returnCode.error, message: '创建失败'};
+})
+
+
+/**
+ * {teamId:'',taskId:'',userId:'';}
+ * 
+ */
+router.post('/receiveTask', async(ctx:any)=>{
+  if (!verificationToken(ctx).flog) {
+    ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
+    return false;
+  }
+  let {teamId,userId,taskId} = ctx.request.body;
+  console.log(teamId,userId);
+  let [data,...a] = await DB.find('team',{id:Number(teamId)});
+  data.taskList.forEach((val:any,ind:number) => {
+    if(val.taskId===Number(taskId)){
+      val.userId = userId;
+      console.log('111')
+    }
+  })
+  let status = await DB.update('team',{id:Number(teamId)},{taskList:data.taskList});
+  if(status.result.n){
+    ctx.body = { code: returnCode.success, message: '领取成功' };
+    return
+  }
+  ctx.body = { code: returnCode.error, message: '领取失败'};
+})
+
 
 module.exports = router.routes();
 

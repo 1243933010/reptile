@@ -1,3 +1,10 @@
+集合:{
+    work,
+    team,
+    notice
+}
+
+
 
 1、/api/upload    上传图片
 
@@ -92,13 +99,19 @@ offset第几页，limit每页数量
 
 
 
-22、/tsc/transfer            转让团队给其他队友
+22、/tsc/transfer            转让团队给其他队友(未开发)
     {teamId:'',teammateId:''}
     teammateId队友id
 
-                       创建任务(队员创建默认属于自己，队长创建得任务可以领取)
+     
+     /tsc/createTeamWork        创建任务(队员创建默认属于自己，队长创建得任务可以领取)
+     {teamId:'',userId:'',taskNmae:'',taskLabel:''}
+                      
+                      
+     /tsc/receiveTask    领取未被领取的任务(队长队员都可领取)
+     {teamId:'',userId:'';}
 
-                       结束某个任务
+     结束某个属于自己的团队任务
 
                        删除某个任务
 
