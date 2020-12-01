@@ -553,8 +553,19 @@ router.post(interfaceNameObj.getMyFinishTeamTask,async (ctx:any)=>{//获取我�
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  
+  let data = await DB.find('team',{'taskList.userId':verificationToken(ctx).data.id},{taskList:true});
+  let arr:Array<object> = [];
+  data.forEach((value:any,index:number)=>{
+    value.taskList.forEach((val:any,ind:number)=>{
+      if(val.userId===verificationToken(ctx).data.id&&val.taskStatus==='1')
+        arr.push(val)
+    })
+  })
+  ctx.body = { code: returnCode.success, message: 'success',data:arr};
 })
+
+
+
 
 module.exports = router.routes();
 

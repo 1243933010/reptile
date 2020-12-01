@@ -123,7 +123,10 @@ offset第几页，limit每页数量
 
 
 28、/tsc/getMyFinishTeamTask  获取我已完成的团队任务
+     {}
 
+29、/tsc/getMyUndoneTeamTask  获取我未完成的团队任务
+     {}
 
 userinfo:{
     token,

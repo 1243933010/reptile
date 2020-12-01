@@ -30,6 +30,8 @@ let interFaceNameObj={
     getMyTeamTask:'/getMyTeamTask',//获取我创建的团队任务
     transfer:'/transfer',//转让团队给其他队友，转让不需要对方同意
     getMyFinishTeamTask:'/getMyFinishTeamTask',//获取我已完成的团队任务
+    getMyUndoneTeamTask:'/getMyUndoneTeamTask',//获取我已完成的团队任务
+
 
 
 

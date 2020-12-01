@@ -310,3 +310,18 @@
 {"host":"192.168.0.75:3000","body":{"teamId":"1","userId":"5fc0b6d93e7df42bd450cb7c","teammateId":"5fc601630570c22068ae964f"},"time":"2020-12-1 18:18:8","url":"/tsc/transfer","response":{"code":200,"message":"success","data":null}} 
  
  
+{"host":"192.168.0.75:3000","body":{},"time":"2020-12-1 18:33:11","url":"/tsc/getMyFinishTeamTask","response":"404 Not found"} 
+ 
+ 
+{"host":"192.168.0.75:3000","body":{},"time":"2020-12-1 18:33:55","url":"/tsc/getMyFinishTeamTask","response":"404 Not found"} 
+ 
+ 
+{"host":"192.168.0.75:3000","body":{},"time":"2020-12-1 18:40:23","url":"/tsc/getMyFinishTeamTask","response":"404 Not found"} 
+ 
+ 
+{"host":"192.168.0.75:3000","body":{},"time":"2020-12-1 18:42:15","url":"/tsc/getMyFinishTeamTask","response":"404 Not found"} 
+ 
+ 
+{"host":"192.168.0.75:3000","body":{},"time":"2020-12-1 18:45:9","url":"/tsc/getMyFinishTeamTask","response":{"code":200,"message":"success","data":[{"teamId":"1","userId":"5fc0b6d93e7df42bd450cb7c","taskNmae":"任务1","taskLabel":"任务1的label","createTime":1606477055477,"endTime":1606809134279,"taskStatus":"1","flog":false,"taskId":1,"isReceive":"0"}]}} 
+ 
+ 

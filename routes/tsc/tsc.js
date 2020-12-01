@@ -746,12 +746,27 @@ router.post(interfaceNameObj.transfer, function (ctx) { return __awaiter(void 0,
     });
 }); });
 router.post(interfaceNameObj.getMyFinishTeamTask, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+    var data, arr;
     return __generator(this, function (_a) {
-        if (!verificationToken(ctx).flog) {
-            ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
-            return [2 /*return*/, false];
+        switch (_a.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                return [4 /*yield*/, DB.find('team', { 'taskList.userId': verificationToken(ctx).data.id }, { taskList: true })];
+            case 1:
+                data = _a.sent();
+                arr = [];
+                data.forEach(function (value, index) {
+                    value.taskList.forEach(function (val, ind) {
+                        if (val.userId === verificationToken(ctx).data.id && val.taskStatus === '1')
+                            arr.push(val);
+                    });
+                });
+                ctx.body = { code: returnCode.success, message: 'success', data: arr };
+                return [2 /*return*/];
         }
-        return [2 /*return*/];
     });
 }); });
 module.exports = router.routes();
