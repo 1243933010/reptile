@@ -9,6 +9,7 @@ const cors = require('koa2-cors')
 // const cors = require('koa2-cors');
 const api = require('./routes/api');
 const tscApi = require('./routes/tsc/tsc')
+const {writeJson} = require('./module/fnc/fnc')
 
 const app = new Koa();
 const router = new Route();
@@ -20,6 +21,7 @@ app.use(serve(__dirname+'/public'))
 app.use(async (ctx,next)=>{
     ctx.body = '404 Not found';
     await next();
+    writeJson(ctx)
 })
 
 

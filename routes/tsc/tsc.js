@@ -41,6 +41,7 @@ var Router = require('koa-router');
 var tokenConfig = { privateKey: 'yue' };
 var multer = require('koa-multer'); //加载koa-multer模块
 var fnc = require('../../module/fnc/fnc');
+var interfaceNameObj = require('../../module/interfaceName');
 var getTime = fnc.getTime;
 var router = new Router();
 var returnCode;
@@ -71,7 +72,7 @@ var verificationToken = function (ctx) {
         console.log(error);
     }
 };
-router.post('/notice', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.notice, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, offset, limit, data, list, arr, len, i, a, b, i, status;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -93,7 +94,7 @@ router.post('/notice', function (ctx) { return __awaiter(void 0, void 0, void 0,
                 ;
                 offset = offset * 1;
                 limit = limit * 1;
-                return [4 /*yield*/, DB.find('user', { username: verificationToken(ctx).data.username }, {})];
+                return [4 /*yield*/, DB.find('user', { _id: DB.getID(verificationToken(ctx).data.id) }, {})];
             case 1:
                 data = _b.sent();
                 list = data[0].notice;
@@ -121,7 +122,7 @@ router.post('/notice', function (ctx) { return __awaiter(void 0, void 0, void 0,
                         }
                     }
                 }
-                return [4 /*yield*/, DB.update('user', { username: verificationToken(ctx).data.username }, { notice: list })];
+                return [4 /*yield*/, DB.update('user', { _id: DB.getID(verificationToken(ctx).data.id) }, { notice: list })];
             case 2:
                 status = _b.sent();
                 // console.log(status.result.n);
@@ -132,7 +133,7 @@ router.post('/notice', function (ctx) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); });
-router.post('/unread', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.unread, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var data, _i, _a, i;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -141,7 +142,7 @@ router.post('/unread', function (ctx) { return __awaiter(void 0, void 0, void 0,
                     ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
                     return [2 /*return*/];
                 }
-                return [4 /*yield*/, DB.find('user', { username: verificationToken(ctx).data.username })];
+                return [4 /*yield*/, DB.find('user', { _id: DB.getID(verificationToken(ctx).data.id) })];
             case 1:
                 data = _b.sent();
                 for (_i = 0, _a = data[0].notice; _i < _a.length; _i++) {
@@ -156,7 +157,7 @@ router.post('/unread', function (ctx) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); });
-router.post('/changePwd', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.changePwd, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var data, obj, _a, pwd, newPwd, status;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -165,7 +166,7 @@ router.post('/changePwd', function (ctx) { return __awaiter(void 0, void 0, void
                     ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
                     return [2 /*return*/];
                 }
-                return [4 /*yield*/, DB.find('user', { username: verificationToken(ctx).data.username })];
+                return [4 /*yield*/, DB.find('user', { _id: DB.getID(verificationToken(ctx).data.id) })];
             case 1:
                 data = _b.sent();
                 obj = data[0];
@@ -174,7 +175,7 @@ router.post('/changePwd', function (ctx) { return __awaiter(void 0, void 0, void
                     ctx.body = { code: returnCode.error, message: "\u539F\u5BC6\u7801\u9519\u8BEF", data: null };
                     return [2 /*return*/, false];
                 }
-                return [4 /*yield*/, DB.update('user', { username: verificationToken(ctx).data.username }, { pwd: newPwd })];
+                return [4 /*yield*/, DB.update('user', { _id: DB.getID(verificationToken(ctx).data.id) }, { pwd: newPwd })];
             case 2:
                 status = _b.sent();
                 if (status.result.n) {
@@ -187,7 +188,7 @@ router.post('/changePwd', function (ctx) { return __awaiter(void 0, void 0, void
         }
     });
 }); });
-router.post('/createTeam', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.createTeam, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var data, status, res;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -199,7 +200,7 @@ router.post('/createTeam', function (ctx) { return __awaiter(void 0, void 0, voi
                 ctx.request.body.createTime = new Date().getTime();
                 ctx.request.body.createDay = getTime('yearMonthDay'); //创建年月日
                 ctx.request.body.flog = true; //是否解散(默认true)
-                return [4 /*yield*/, DB.find('user', { username: verificationToken(ctx).data.username })];
+                return [4 /*yield*/, DB.find('user', { _id: DB.getID(verificationToken(ctx).data.id) })];
             case 1:
                 data = _a.sent();
                 return [4 /*yield*/, DB.find('team', {})];
@@ -223,7 +224,7 @@ router.post('/createTeam', function (ctx) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
-router.post('/teamAll', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.teamAll, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var res;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -241,7 +242,7 @@ router.post('/teamAll', function (ctx) { return __awaiter(void 0, void 0, void 0
         }
     });
 }); });
-router.post('/myTeam', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.myTeam, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, userId, useranme, res;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -263,7 +264,7 @@ router.post('/myTeam', function (ctx) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); });
-router.post('/searchUser', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.searchUser, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var text, res;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -291,7 +292,7 @@ router.post('/searchUser', function (ctx) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
-router.post('/inviteJoin', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.inviteJoin, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, userId, teamId, inviteId, message, teamData, i, name_1, inviteJoinHistory, _i, _b, iterator, len, obj, status_1, obj, status_2;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -361,7 +362,7 @@ router.post('/inviteJoin', function (ctx) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
-router.post('/beInvited', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.beInvited, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, history;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -384,7 +385,7 @@ router.post('/beInvited', function (ctx) { return __awaiter(void 0, void 0, void
         }
     });
 }); });
-router.post('/processInvitation', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.processInvitation, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, id, status, userId, teamId, username, data, i, msg, teamData, obj, res;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -394,7 +395,9 @@ router.post('/processInvitation', function (ctx) { return __awaiter(void 0, void
                     return [2 /*return*/, false];
                 }
                 _a = ctx.request.body, id = _a.id, status = _a.status, userId = _a.userId, teamId = _a.teamId, username = _a.username;
-                return [4 /*yield*/, DB.find('inviteJoinHistory', { userId: userId })];
+                return [4 /*yield*/, DB.find('inviteJoinHistory', { userId: userId })
+                    // console.log(data)
+                ];
             case 1:
                 data = _b.sent();
                 i = 0;
@@ -419,7 +422,7 @@ router.post('/processInvitation', function (ctx) { return __awaiter(void 0, void
                 return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, { memberList: teamData[0].memberList })];
             case 5:
                 res = _b.sent();
-                console.log(res.result);
+                // console.log(res.result)
                 if (res.result.n) {
                     ctx.body = { code: returnCode.success, message: 'success', data: null };
                 }
@@ -437,7 +440,7 @@ router.post('/processInvitation', function (ctx) { return __awaiter(void 0, void
         }
     });
 }); });
-router.post('/participateTeam', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.participateTeam, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, data;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -457,7 +460,7 @@ router.post('/participateTeam', function (ctx) { return __awaiter(void 0, void 0
         }
     });
 }); });
-router.post('/deleteTeam', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.deleteTeam, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var teamId, data;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -480,29 +483,12 @@ router.post('/deleteTeam', function (ctx) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
-router.post('/transfer', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, teamId, teammateId, data;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                if (!verificationToken(ctx).flog) {
-                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
-                    return [2 /*return*/, false];
-                }
-                _a = ctx.request.body, teamId = _a.teamId, teammateId = _a.teammateId;
-                return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, { flog: false })];
-            case 1:
-                data = _b.sent();
-                return [2 /*return*/];
-        }
-    });
-}); });
 /**
  * 接收{teamId:'',userId:'',taskNmae:'',taskLabel:''}
  * 额外添加开始时间createTime、结束时间endTime、任务状态taskStatus(默认为'0'未完成)、
  * 任务是否领取状态isReceive(0未领取)、是否逻辑删除flog(默认为true)
  */
-router.post('/createTeamWork', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.createTeamWork, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, teamId, userId, _b, team, a, status;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -543,7 +529,7 @@ router.post('/createTeamWork', function (ctx) { return __awaiter(void 0, void 0,
  * {teamId:'',taskId:'',userId:'';}
  *
  */
-router.post('/receiveTask', function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+router.post(interfaceNameObj.receiveTask, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, teamId, userId, taskId, _b, data, a, status;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -567,12 +553,205 @@ router.post('/receiveTask', function (ctx) { return __awaiter(void 0, void 0, vo
             case 2:
                 status = _c.sent();
                 if (status.result.n) {
-                    ctx.body = { code: returnCode.success, message: '领取成功' };
+                    ctx.body = { code: returnCode.success, message: '领取成功', data: null };
                     return [2 /*return*/];
                 }
-                ctx.body = { code: returnCode.error, message: '领取失败' };
+                ctx.body = { code: returnCode.error, message: '领取失败', data: null };
                 return [2 /*return*/];
         }
+    });
+}); });
+/**
+ * {teamId:'',taskId:'',userId:'';}
+ *
+ */
+router.post(interfaceNameObj.finishTeamTask, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, teamId, userId, taskId, _b, data, a, taskflog, userFlog, statusFlog, status;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                _a = ctx.request.body, teamId = _a.teamId, userId = _a.userId, taskId = _a.taskId;
+                return [4 /*yield*/, DB.find('team', { id: Number(teamId) })];
+            case 1:
+                _b = _c.sent(), data = _b[0], a = _b.slice(1);
+                if (!data) {
+                    ctx.body = { code: returnCode.error, message: '未找到该团队', data: null };
+                    return [2 /*return*/, false];
+                }
+                taskflog = false;
+                userFlog = false;
+                statusFlog = false;
+                data.taskList.forEach(function (val, ind) {
+                    if (val.taskId === Number(taskId)) {
+                        taskflog = true;
+                        if (val.userId === userId) {
+                            userFlog = true;
+                            if (val.taskStatus === '0') {
+                                statusFlog = true;
+                                val.taskStatus = '1';
+                                val.endTime = new Date().getTime();
+                            }
+                        }
+                    }
+                });
+                if (!taskflog) {
+                    ctx.body = { code: returnCode.error, message: '未找到该任务', data: null };
+                    return [2 /*return*/, false];
+                }
+                if (!userFlog) {
+                    ctx.body = { code: returnCode.error, message: '该角色没有权限更改任务状态', data: null };
+                    return [2 /*return*/, false];
+                }
+                if (!statusFlog) {
+                    ctx.body = { code: returnCode.error, message: '该任务已经是完成状态', data: null };
+                    return [2 /*return*/, false];
+                }
+                return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, { taskList: data.taskList })];
+            case 2:
+                status = _c.sent();
+                if (status.result.n) {
+                    ctx.body = { code: returnCode.success, message: '更改任务状态成功', data: null };
+                    return [2 /*return*/, false];
+                }
+                ctx.body = { code: returnCode.error, message: '更改任务状态失败', data: null };
+                return [2 /*return*/];
+        }
+    });
+}); });
+/**
+ *
+ * {teamId:'',taskId:'',userId:'';}
+ */
+router.post(interfaceNameObj.deleteTeamTask, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, teamId, userId, taskId, _b, data, a, taskflog, userFlog, statusFlog, status;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                _a = ctx.request.body, teamId = _a.teamId, userId = _a.userId, taskId = _a.taskId;
+                return [4 /*yield*/, DB.find('team', { id: Number(teamId) })];
+            case 1:
+                _b = _c.sent(), data = _b[0], a = _b.slice(1);
+                if (!data) {
+                    ctx.body = { code: returnCode.error, message: '未找到该团队', data: null };
+                    return [2 /*return*/, false];
+                }
+                taskflog = false;
+                userFlog = false;
+                statusFlog = false;
+                data.taskList.forEach(function (val, ind) {
+                    if (val.taskId === Number(taskId)) {
+                        taskflog = true;
+                        if (val.userId === userId) {
+                            userFlog = true;
+                            if (val.flog) {
+                                statusFlog = true;
+                                val.flog = false;
+                            }
+                        }
+                    }
+                });
+                if (!taskflog) {
+                    ctx.body = { code: returnCode.error, message: '未找到该任务', data: null };
+                    return [2 /*return*/, false];
+                }
+                if (!userFlog) {
+                    ctx.body = { code: returnCode.error, message: '该角色没有权限更改任务状态', data: null };
+                    return [2 /*return*/, false];
+                }
+                if (!statusFlog) {
+                    ctx.body = { code: returnCode.error, message: '该任务已被删除', data: null };
+                    return [2 /*return*/, false];
+                }
+                return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, { taskList: data.taskList })];
+            case 2:
+                status = _c.sent();
+                if (status.result.n) {
+                    ctx.body = { code: returnCode.success, message: '删除成功', data: null };
+                    return [2 /*return*/, false];
+                }
+                ctx.body = { code: returnCode.error, message: '删除失败', data: null };
+                return [2 /*return*/];
+        }
+    });
+}); });
+/**
+ *
+ *
+ */
+router.post(interfaceNameObj.getMyTeamTask, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, data, arr;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                userId = ctx.request.body.userId;
+                return [4 /*yield*/, DB.find('team', { 'taskList.userId': userId }, { taskList: true })];
+            case 1:
+                data = _a.sent();
+                arr = [];
+                data.forEach(function (val, ind) {
+                    if (val.taskList) {
+                        val.taskList.forEach(function (v, i) {
+                            if (v.userId === userId) {
+                                arr.push(v);
+                            }
+                        });
+                    }
+                });
+                ctx.body = { code: returnCode.success, message: 'success', data: arr };
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.post(interfaceNameObj.transfer, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, teamId, teammateId, _b, data, a, status;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                if (!verificationToken(ctx).flog) {
+                    ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+                    return [2 /*return*/, false];
+                }
+                _a = ctx.request.body, teamId = _a.teamId, teammateId = _a.teammateId;
+                return [4 /*yield*/, DB.find('team', { id: Number(teamId) })];
+            case 1:
+                _b = _c.sent(), data = _b[0], a = _b.slice(1);
+                if (verificationToken(ctx).data.id !== data.userId.toString()) {
+                    ctx.body = { code: returnCode.error, message: '你不是该团队的队长', data: null };
+                    return [2 /*return*/, false];
+                }
+                data.userId = teammateId;
+                console.log(data);
+                return [4 /*yield*/, DB.update('team', { id: Number(teamId) }, data)];
+            case 2:
+                status = _c.sent();
+                if (status.result.n) {
+                    ctx.body = { code: returnCode.success, message: 'success', data: null };
+                    return [2 /*return*/, false];
+                }
+                ctx.body = { code: returnCode.error, message: 'error', data: null };
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.post(interfaceNameObj.getMyFinishTeamTask, function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        if (!verificationToken(ctx).flog) {
+            ctx.body = { code: returnCode.tokenFailure, message: "" + verificationToken(ctx).msg };
+            return [2 /*return*/, false];
+        }
+        return [2 /*return*/];
     });
 }); });
 module.exports = router.routes();

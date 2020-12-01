@@ -85,7 +85,7 @@ offset第几页，limit每页数量
 
  19、   /tsc/processInvitation  处理邀请
     {status:'1',id:'1',userId:'',teamId:'',username:''}
-    status为"1"是同意，"0"是拒绝,id为请求信息的id,userId用户id，登录有，teamId:团队id
+    status为"1"是同意，"0"是拒绝,id为请求信息的id,userId自己的id，登录有，teamId:团队id，username：''
 
 
 
@@ -99,21 +99,31 @@ offset第几页，limit每页数量
 
 
 
-22、/tsc/transfer            转让团队给其他队友(未开发)
-    {teamId:'',teammateId:''}
+22、/tsc/transfer            转让团队给其他队友，转让不需要对方同意
+    {teamId:'',teammateId:'',userId:''}
     teammateId队友id
 
      
-     /tsc/createTeamWork        创建任务(队员创建默认属于自己，队长创建得任务可以领取)
+23、 /tsc/createTeamWork        创建任务(队员创建默认属于自己，队长创建得任务可以领取)
      {teamId:'',userId:'',taskNmae:'',taskLabel:''}
                       
                       
-     /tsc/receiveTask    领取未被领取的任务(队长队员都可领取)
-     {teamId:'',userId:'';}
+24、 /tsc/receiveTask    领取未被领取的任务(队长队员都可领取)
+     {teamId:'',userId:'',taskId:''}
 
-     结束某个属于自己的团队任务
 
-                       删除某个任务
+  25、   /tsc/finishTeamTask  结束某个属于自己的团队任务
+     {teamId:'',userId:'',taskId:''}
+
+  26、   /tsc/deleteTeamTask     删除某个自己的任务
+     {teamId:'',userId:'',taskId:''}
+
+27、  /tsc/getMyTeamTask     获取我创建的团队任务
+     {userId:''}
+
+
+28、/tsc/getMyFinishTeamTask  获取我已完成的团队任务
+
 
 userinfo:{
     token,

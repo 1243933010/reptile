@@ -6,6 +6,8 @@ const Router = require('koa-router');
 const tokenConfig = { privateKey: 'yue' };
 const multer = require('koa-multer');//加载koa-multer模块
 const util = require('../module/util');
+const interfaceNameObj = require('../module/interfaceName');
+
 // const { Db } = require('mongodb');
 
 const router = new Router();
@@ -49,15 +51,16 @@ let verificationToken = (ctx) => {//验证token
 
 
 
-router.post('/updateProfile', async (ctx) => {//更新头像名字
+router.post(interfaceNameObj.updateProfile, async (ctx) => {//更新头像名字
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
     return
   }
-  let { username, avatar } = ctx.request.body;
+  let {username, avatar } = ctx.request.body;
+  
   if (username) {
-    let updateData = await DB.update('user', { username: verificationToken(ctx).data.username }, { username });
-    // console.log(updateData.result)
+    let updateData = await DB.update('user', { _id:DB.getID(verificationToken(ctx).data.id)}, { username });
+    console.log(verificationToken(ctx).data.id)
     if (updateData.result.n) {
       ctx.body = { code: 200, message: '更改名字成功', data: null };
     } else {
@@ -65,7 +68,7 @@ router.post('/updateProfile', async (ctx) => {//更新头像名字
     }
   }
   if (avatar) {
-    let updateData = await DB.update('user', { username: verificationToken(ctx).data.username }, { avatar });
+    let updateData = await DB.update('user', { _id:DB.getID(verificationToken(ctx).data.id) }, { avatar });
     // console.log(updateData.result)
     if (updateData.result.n) {
       ctx.body = { code: 200, message: '更改头像成功', data: null };
@@ -77,7 +80,7 @@ router.post('/updateProfile', async (ctx) => {//更新头像名字
 })   
 
 
-router.post('/login', async (ctx) => {//登录
+router.post(interfaceNameObj.login, async (ctx) => {//登录
   if (ctx.request.body) {
     let { username, pwd } = ctx.request.body;
     try {
@@ -86,7 +89,7 @@ router.post('/login', async (ctx) => {//登录
         let obj = res[0];
         if (obj.pwd === pwd) {
           delete obj.pwd;
-          let token = jwt.sign({ username }, tokenConfig.privateKey, { expiresIn: '7d' })
+          let token = jwt.sign({ id:obj._id }, tokenConfig.privateKey, { expiresIn: '7d' })
           obj.token = 'Bearer ' + token;
           ctx.body = { code: 200, message: '成功', data: { userinfo: obj } };
         } else {
@@ -103,7 +106,7 @@ router.post('/login', async (ctx) => {//登录
 
 })  
 
-router.post('/registered', async (ctx) => {//注册
+router.post(interfaceNameObj.registered, async (ctx) => {//注册
   // console.log(ctx.request.body);
   // console.log(getIPAdress());
   if (!ctx.request.body.username) {
@@ -134,7 +137,7 @@ router.post('/registered', async (ctx) => {//注册
 }) 
 
 
-router.post('/updateMessage', async (ctx) => {//更新工作内容(暂未使用)
+router.post(interfaceNameObj.updateMessage, async (ctx) => {//更新工作内容(暂未使用)
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
     return
@@ -146,7 +149,7 @@ router.post('/updateMessage', async (ctx) => {//更新工作内容(暂未使用)
 
 
 
-router.post('/addWorkContent', async (ctx) => {////添加工作内容
+router.post(interfaceNameObj.addWorkContent, async (ctx) => {//添加工作内容
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
     return
@@ -156,12 +159,12 @@ router.post('/addWorkContent', async (ctx) => {////添加工作内容
   if (!estimatedTime) {ctx.body = { code: 400, message: '工作时长不能为空' };return false;}
   let key = getDay();
   try {
-    let res = await DB.find('user', { username: verificationToken(ctx).data.username });
+    let res = await DB.find('user', { _id:DB.getID(verificationToken(ctx).data.id) });
 
     let msgObj = {createTime:new Date(),message:'你创建了一个工作内容',flog:false};
     res[0].notice.unshift(msgObj);
     let noticeObj = {['notice']:res[0].notice};
-    let status = await DB.update('user',{ username: verificationToken(ctx).data.username },noticeObj);
+    let status = await DB.update('user',{ _id:DB.getID(verificationToken(ctx).data.id) },noticeObj);
     // console.log(status.result.n);
 
     let userinfo = res[0];
@@ -178,7 +181,7 @@ router.post('/addWorkContent', async (ctx) => {////添加工作内容
     }
     arr.push(ctx.request.body);
     obj = { [`workRecordObj.${key}`]: arr };
-    let type = await DB.update('user', { username: verificationToken(ctx).data.username }, obj);
+    let type = await DB.update('user', { _id:DB.getID(verificationToken(ctx).data.id) }, obj);
     if (type.result.n) {
       ctx.body = { code: 200, message: '添加成功', data: null };
     } else {
@@ -190,13 +193,13 @@ router.post('/addWorkContent', async (ctx) => {////添加工作内容
 }) 
 
 
-router.post('/workDay', async (ctx) => {//获取某天得添加记录
+router.post(interfaceNameObj.workDay, async (ctx) => {//获取某天得添加记录
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` };
     return false;
   }
   let time = new Date(ctx.request.body.time).getTime();
-  let res = await DB.find('user', { username: verificationToken(ctx).data.username });
+  let res = await DB.find('user', { _id:DB.getID(verificationToken(ctx).data.id) });
   // console.log(res)
   if (res[0].workRecordObj[time]) {
     res[0].workRecordObj[time].forEach((val, ind) => {
@@ -215,17 +218,17 @@ router.post('/workDay', async (ctx) => {//获取某天得添加记录
 })
 
 
-router.post('/setWork', async (ctx) => {//修改状态
+router.post(interfaceNameObj.setWork, async (ctx) => {//修改状态
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
     return
   }
-  let data = await DB.find('user', { username: verificationToken(ctx).data.username });
+  let data = await DB.find('user', { _id:DB.getID(verificationToken(ctx).data.id) });
 
   let msgObj = {createTime:new Date(),message:'你修改了工作状态',flog:false};
   data[0].notice.unshift(msgObj);
   let noticeObj = {['notice']:data[0].notice};
-  let noticeStatus = await DB.update('user',{ username: verificationToken(ctx).data.username },noticeObj);
+  let noticeStatus = await DB.update('user',{ _id:DB.getID(verificationToken(ctx).data.id) },noticeObj);
   // console.log(noticeStatus.result.n);
 
   let msg = data[0].workRecordObj[ctx.request.body.time];
@@ -247,7 +250,7 @@ router.post('/setWork', async (ctx) => {//修改状态
   })
   let obj = {};
   obj = { [`workRecordObj.${ctx.request.body.time}`]: msg };
-  let status = await DB.update('user', { username: verificationToken(ctx).data.username }, obj);
+  let status = await DB.update('user', { _id:DB.getID(verificationToken(ctx).data.id) }, obj);
   if (status.result.n) {
     ctx.body = { code: 200, message: '修改成功', data: null }
   } else {
@@ -256,18 +259,18 @@ router.post('/setWork', async (ctx) => {//修改状态
 }) 
 
 
-router.post('/deleteWork', async (ctx) => {//删除某条数据
+router.post(interfaceNameObj.deleteWork, async (ctx) => {//删除某条数据
   // console.log(ctx.request.body);
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
     return
   }
-  let data = await DB.find('user', { username: verificationToken(ctx).data.username });
+  let data = await DB.find('user', {_id:DB.getID(verificationToken(ctx).data.id) });
   // console.log(data[0].workRecordObj[ctx.request.body.time])
   let msgObj = {createTime:new Date(),message:'你删除了一项工作',flog:false};
   data[0].notice.unshift(msgObj);
   let noticeObj = {['notice']:data[0].notice};
-  let noticeStatus = await DB.update('user',{ username: verificationToken(ctx).data.username },noticeObj);
+  let noticeStatus = await DB.update('user',{ _id:DB.getID(verificationToken(ctx).data.id) },noticeObj);
   // console.log(noticeStatus.result.n);
 
   let arr = data[0].workRecordObj[ctx.request.body.time];
@@ -281,7 +284,7 @@ router.post('/deleteWork', async (ctx) => {//删除某条数据
   })
   if (type) {
     let obj = { [`workRecordObj.${ctx.request.body.time}`]: arr };
-    let status = await DB.update('user', { username: verificationToken(ctx).data.username }, obj);
+    let status = await DB.update('user', { _id:DB.getID(verificationToken(ctx).data.id) }, obj);
     if (status.result.n) {
       ctx.body = { code: 200, message: '删除成功', data: null }
     } else {
@@ -295,12 +298,12 @@ router.post('/deleteWork', async (ctx) => {//删除某条数据
 })
 
 
-router.post('/sevenDayWork', async (ctx) => {//获取当前起七天内得数据(所有，已完成，未完成)
+router.post(interfaceNameObj.sevenDayWork, async (ctx) => {//获取当前起七天内得数据(所有，已完成，未完成)
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
     return
   }
-  let data = await DB.find('user', { username: verificationToken(ctx).data.username });
+  let data = await DB.find('user', { _id:DB.getID(verificationToken(ctx).data.id) });
   
   let list = getList(getSevenTime(),data[0].workRecordObj,ctx.request.body.type);
   // console.log(list)
@@ -308,7 +311,7 @@ router.post('/sevenDayWork', async (ctx) => {//获取当前起七天内得数据
 })
 
 
-router.post('/upload', upload.single('file'), async (ctx, next) => {//上传图片返回路径
+router.post(interfaceNameObj.upload, upload.single('file'), async (ctx, next) => {//上传图片返回路径
   ctx.body = { code: 200, message: '成功', filename: `http://106.55.59.24:3000/imgs/${ctx.req.file.filename}` }; //返回文件名
 })
 
