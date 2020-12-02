@@ -30,6 +30,10 @@ let interFaceNameObj={
     getMyTeamTask:'/getMyTeamTask',//获取我创建的团队任务
     transfer:'/transfer',//转让团队给其他队友，转让不需要对方同意
     setLabel:'/setLabel',//设置添加技能标签
+    setMobile:'/setMobile',//设置mobile
+    logout:'/logout',//注销账号
+
+
 
 
 

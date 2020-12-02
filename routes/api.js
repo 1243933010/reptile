@@ -7,6 +7,7 @@ const tokenConfig = { privateKey: 'yue' };
 const multer = require('koa-multer');//加载koa-multer模块
 const util = require('../module/util');
 const interfaceNameObj = require('../module/interfaceName');
+const url = require('../module/config')
 
 // const { Db } = require('mongodb');
 
@@ -84,7 +85,7 @@ router.post(interfaceNameObj.login, async (ctx) => {//登录
   if (ctx.request.body) {
     let { username, pwd } = ctx.request.body;
     try {
-      let res = await DB.find('user', { username },{avatar:0,notice:0,workRecordObj:0});
+      let res = await DB.find('user', { username,status:'1' },{status:0,avatar:0,notice:0,workRecordObj:0});
       if (res.length > 0) {
         let obj = res[0];
         // console.log(res)
@@ -118,15 +119,16 @@ router.post(interfaceNameObj.registered, async (ctx) => {//注册
     ctx.body = { code: 400, message: '请填写密码' };
     return false;
   }
-  let data = await DB.find('user', { username: ctx.request.body.username });
+  let data = await DB.find('user', { username: ctx.request.body.username,status:'1' });
   if (data.length) {
     ctx.body = { code: 400, message: '该用户名已被注册' };
     return false;
   }
-  ctx.request.body.avatar = `http:${getIPAdress()}:3000/imgs/1604565232439.png`;
+  ctx.request.body.avatar = `http://${url.network}:3000/imgs/1604565232439.png`;
   ctx.request.body.workRecordObj = {};
   ctx.request.body.notice = [];
   ctx.request.body.mobile = '';
+  ctx.request.body.status = '1';
   let status = await DB.insert('user', ctx.request.body);
   if (status.result.n) {
     ctx.body = { code: 200, message: '注册成功', data: null };
@@ -313,7 +315,7 @@ router.post(interfaceNameObj.sevenDayWork, async (ctx) => {//获取当前起七�
 
 
 router.post(interfaceNameObj.upload, upload.single('file'), async (ctx, next) => {//上传图片返回路径
-  ctx.body = { code: 200, message: '成功', filename: `http://106.55.59.24:3000/imgs/${ctx.req.file.filename}` }; //返回文件名
+  ctx.body = { code: 200, message: '成功', filename: `http://${url.network}:3000/imgs/${ctx.req.file.filename}` }; //返回文件名
 })
 
             

@@ -124,6 +124,9 @@ offset第几页，limit每页数量
 28、 /tsc/setLabel    设置添加技能标签
     {labelList:[]}
 
+29、/tsc/setMobile  设置mobile
+
+30、 /tsc/logout   注销账号
 
 
 
