@@ -37,15 +37,15 @@ function getFilesList(list) {
 var fileSize;
 (function (fileSize) {
     fileSize[fileSize["minFile"] = 5000000] = "minFile";
-    fileSize[fileSize["maxFile"] = 10000000] = "maxFile";
+    fileSize[fileSize["maxFile"] = 10000000] = "maxFile"; //10m
 })(fileSize || (fileSize = {}));
 function writeJson(ctx) {
-    var url = path.resolve(__dirname, '../info');
-    var files = fs.readdirSync(url);
-    var filesNum = getFilesList(files);
-    var data = fs.statSync(path.resolve(__dirname, "../info/info" + filesNum + ".md"));
+    var url = path.resolve(__dirname, '../info'); //获取info文件夹绝对路径
+    var files = fs.readdirSync(url); //读取文件夹获取文件名数组
+    var filesNum = getFilesList(files); //通过上面的函数获取最新的文件夹名字
+    var data = fs.statSync(path.resolve(__dirname, "../info/info" + filesNum + ".md")); //读取最新info文件的文件信息
     var writeStream;
-    if (data.size > fileSize.maxFile) {
+    if (data.size > fileSize.maxFile) { //判断最新文件的大小是否超出设置额度,超出在新的info文件建立写入流，否则在当前文件建立写入流
         writeStream = fs.createWriteStream("./module/info/info" + (filesNum + 1) + ".md", { 'flags': 'a' });
     }
     else {
@@ -58,11 +58,16 @@ function writeJson(ctx) {
         url: ctx.request.url,
         response: ctx.body
     };
-    writeStream.write(JSON.stringify(obj) + " \n \n \n", 'UTF8');
+    //开始写入数据
+    writeStream.write("host:" + ctx.request.header.host + " \n", 'UTF-8');
+    writeStream.write("body:" + JSON.stringify(ctx.request.body) + " \n", 'UTF-8');
+    writeStream.write("time:" + getNowDate() + " \n", 'UTF-8');
+    writeStream.write("url:" + ctx.request.url + " \n", 'UTF-8');
+    writeStream.write("response:" + JSON.stringify(ctx.body) + " \n \n \n", 'UTF-8');
     writeStream.on('error', function (err) {
         console.log(err);
     });
-    writeStream.end();
+    writeStream.end(); //写入结束
     writeStream.on('finish', function () {
         // console.log('写入完成')
     });

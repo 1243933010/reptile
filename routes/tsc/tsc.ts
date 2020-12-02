@@ -165,12 +165,7 @@ router.post(interfaceNameObj.myTeam, async (ctx: any) => {   //我的团队
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let { userId, useranme } = ctx.request.body;
-  let res = await DB.find('team', { userId: DB.getID(userId), flog: true }, { flog: 0 });
-  // console.log(res)
-  res.forEach((val: any, ind: Number) => {
-    val.username = useranme;
-  });
+  let res = await DB.find('team', { userId: DB.getID(verificationToken(ctx).data.id), flog: true }, { taskList: false });
   ctx.body = { code: returnCode.success, message: '成功', data: res };
 })
 
@@ -344,7 +339,7 @@ router.post(interfaceNameObj.createTeamWork,async (ctx:any)=>{  //创建团队�
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {teamId,userId} = ctx.request.body;
+  let {teamId} = ctx.request.body;
   let [team,...a] = await DB.find('team',{id:Number(teamId)});
   ctx.request.body.createTime = new Date().getTime();
   ctx.request.body.endTime = null;
@@ -352,7 +347,7 @@ router.post(interfaceNameObj.createTeamWork,async (ctx:any)=>{  //创建团队�
   ctx.request.body.flog = true;
   ctx.request.body.taskId = team.taskList.length+1;
   ctx.request.body.isReceive = '1'; 
-  if(team.userId.toString()=== userId){//如果是队长创建的项目未领取的状态
+  if(team.userId.toString()=== verificationToken(ctx).data.id){//如果是队长创建的项目未领取的状态
     ctx.request.body.isReceive = '0';
     ctx.request.body.userId = null;
   }
@@ -377,13 +372,12 @@ router.post(interfaceNameObj.receiveTask, async(ctx:any)=>{  // 领取未被领�
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {teamId,userId,taskId} = ctx.request.body;
-  console.log(teamId,userId);
+  let {teamId,taskId} = ctx.request.body;
+  console.log(teamId);
   let [data,...a] = await DB.find('team',{id:Number(teamId)});
   data.taskList.forEach((val:any,ind:number) => {
     if(val.taskId===Number(taskId)){
-      val.userId = userId;
-      console.log('111')
+      val.userId = verificationToken(ctx).data.id;
     }
   })
   let status = await DB.update('team',{id:Number(teamId)},{taskList:data.taskList});
@@ -404,7 +398,7 @@ router.post(interfaceNameObj.finishTeamTask,async (ctx:any)=>{ //结束某个属
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {teamId,userId,taskId} = ctx.request.body;
+  let {teamId,taskId} = ctx.request.body;
   // console.log(teamId,userId);
   let [data,...a] = await DB.find('team',{id:Number(teamId)});
   if(!data){
@@ -417,7 +411,7 @@ router.post(interfaceNameObj.finishTeamTask,async (ctx:any)=>{ //结束某个属
   data.taskList.forEach((val:any,ind:number) => {
     if(val.taskId===Number(taskId)){
       taskflog = true;
-      if(val.userId===userId){
+      if(val.userId===verificationToken(ctx).data.id){
         userFlog = true;
         if(val.taskStatus==='0'){
           statusFlog = true;
@@ -457,7 +451,7 @@ router.post(interfaceNameObj.deleteTeamTask,async (ctx:any)=>{ //删除某个自
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {teamId,userId,taskId} = ctx.request.body;
+  let {teamId,taskId} = ctx.request.body;
   // console.log(teamId,userId);
   let [data,...a] = await DB.find('team',{id:Number(teamId)});
   if(!data){
@@ -470,7 +464,7 @@ router.post(interfaceNameObj.deleteTeamTask,async (ctx:any)=>{ //删除某个自
   data.taskList.forEach((val:any,ind:number) => {
     if(val.taskId===Number(taskId)){
       taskflog = true;
-      if(val.userId===userId){
+      if(val.userId===verificationToken(ctx).data.id){
         userFlog = true;
         if(val.flog){
           statusFlog = true;
@@ -509,13 +503,14 @@ router.post(interfaceNameObj.getMyTeamTask,async (ctx:any)=>{ //获取我创建�
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let {userId} = ctx.request.body;
-  let data = await DB.find('team',{'taskList.userId':userId},{taskList:true});
+  let {status} = ctx.request.body;
+  
+  let data = await DB.find('team',{'taskList.userId':verificationToken(ctx).data.id},{taskList:true});
   let arr:Array<object>=[];
   data.forEach((val:any,ind:number)=> {
     if(val.taskList){
       val.taskList.forEach((v:any,i:number)=>{
-        if(v.userId===userId){
+        if(v.userId===verificationToken(ctx).data.id&&v.taskStatus===status){
          arr.push(v);
         }
       })
@@ -548,22 +543,19 @@ router.post(interfaceNameObj.transfer,async (ctx:any)=>{ //转让团队给其他
 })
 
 
-router.post(interfaceNameObj.getMyFinishTeamTask,async (ctx:any)=>{//获取我已完成的团队任务
+router.post(interfaceNameObj.setLabel,async (ctx:any)=>{ //设置添加技能标签
   if (!verificationToken(ctx).flog) {
     ctx.body = { code: returnCode.tokenFailure, message: `${verificationToken(ctx).msg}` }
     return false;
   }
-  let data = await DB.find('team',{'taskList.userId':verificationToken(ctx).data.id},{taskList:true});
-  let arr:Array<object> = [];
-  data.forEach((value:any,index:number)=>{
-    value.taskList.forEach((val:any,ind:number)=>{
-      if(val.userId===verificationToken(ctx).data.id&&val.taskStatus==='1')
-        arr.push(val)
-    })
-  })
-  ctx.body = { code: returnCode.success, message: 'success',data:arr};
+  let {labelList} = ctx.request.body;
+  let status = await DB.update('user',{_id:DB.getID(verificationToken(ctx).data.id)},{labelList})
+  if(status.result.n){
+    ctx.body = { code: returnCode.success, message: 'success',data:null }
+    return false;
+  }
+  ctx.body = { code: returnCode.error, message: 'error',data:null }
 })
-
 
 
 

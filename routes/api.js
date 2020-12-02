@@ -87,6 +87,7 @@ router.post(interfaceNameObj.login, async (ctx) => {//登录
       let res = await DB.find('user', { username },{avatar:0,notice:0,workRecordObj:0});
       if (res.length > 0) {
         let obj = res[0];
+        // console.log(res)
         if (obj.pwd === pwd) {
           delete obj.pwd;
           let token = jwt.sign({ id:obj._id }, tokenConfig.privateKey, { expiresIn: '7d' })

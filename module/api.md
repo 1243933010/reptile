@@ -64,7 +64,7 @@ offset第几页，limit每页数量
 
                      
 15、 /tsc/myTeam        我是队长的任务团队
-    {userId:'',useranme:""}
+    {}
 
  16、   /tsc/searchUser     搜索用户，暂时只能是名字，如果绑定了手机号也可以搜索手机号
     {text:'名字或者手机号'}
@@ -100,33 +100,32 @@ offset第几页，limit每页数量
 
 
 22、/tsc/transfer            转让团队给其他队友，转让不需要对方同意
-    {teamId:'',teammateId:'',userId:''}
+    {teamId:'',teammateId:''}
     teammateId队友id
 
      
 23、 /tsc/createTeamWork        创建任务(队员创建默认属于自己，队长创建得任务可以领取)
-     {teamId:'',userId:'',taskNmae:'',taskLabel:''}
+     {teamId:'',,taskNmae:'',taskLabel:''}
                       
                       
 24、 /tsc/receiveTask    领取未被领取的任务(队长队员都可领取)
-     {teamId:'',userId:'',taskId:''}
+     {teamId:'',taskId:''}
 
 
   25、   /tsc/finishTeamTask  结束某个属于自己的团队任务
-     {teamId:'',userId:'',taskId:''}
+     {teamId:'',taskId:''}
 
   26、   /tsc/deleteTeamTask     删除某个自己的任务
-     {teamId:'',userId:'',taskId:''}
+     {teamId:'',,taskId:''}
 
 27、  /tsc/getMyTeamTask     获取我创建的团队任务
-     {userId:''}
+     {status:''} '0'未完成 '1'已完成
+
+28、 /tsc/setLabel    设置添加技能标签
+    {labelList:[]}
 
 
-28、/tsc/getMyFinishTeamTask  获取我已完成的团队任务
-     {}
 
-29、/tsc/getMyUndoneTeamTask  获取我未完成的团队任务
-     {}
 
 userinfo:{
     token,
