@@ -14,7 +14,6 @@ let interFaceNameObj={
     unread:'/unread',//获取未读消息数量
     changePwd:'/changePwd',//修改密码
     createTeam:'/createTeam',//创建团队
-    teamAll:'/teamAll',//所有得团队
     myTeam:'/myTeam',//我的团队
     searchUser:'/searchUser',//搜索用户
     inviteJoin:'/inviteJoin',//邀请加入(内部有未验证标注)
@@ -32,6 +31,13 @@ let interFaceNameObj={
     setLabel:'/setLabel',//设置添加技能标签
     setMobile:'/setMobile',//设置mobile
     logout:'/logout',//注销账号
+
+    adminLogin:'/adminLogin',//管理员登录
+    user:'/user',//所有用户
+    delteUser:'/delteUser',//删除用户
+    teamAll:'/teamAll',//所有得团队
+
+
 
 
 

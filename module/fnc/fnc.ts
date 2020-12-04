@@ -58,14 +58,7 @@ function writeJson(ctx: any) {
         writeStream = fs.createWriteStream(`./module/info/info${filesNum}.md`, { 'flags': 'a' });
     }
 
-    let obj: object = {//写入数据有ip地址、请求参数、当前时间、请求url路径、返回信息
-        host: ctx.request.header.host,
-        body: ctx.request.body,
-        time: getNowDate(),
-        url: ctx.request.url,
-        response: ctx.body
-    };
-    //开始写入数据
+    //开始写入数据，写入数据有ip地址、请求参数、当前时间、请求url路径、返回信息
     writeStream.write(`host:${ctx.request.header.host} \n`,'UTF-8')
     writeStream.write(`body:${JSON.stringify(ctx.request.body)} \n`,'UTF-8')
     writeStream.write(`time:${getNowDate()} \n`,'UTF-8')

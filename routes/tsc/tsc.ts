@@ -164,7 +164,9 @@ router.post(interfaceNameObj.myTeam, async (ctx: any) => {   //我的团队
   if (!verificationToken(ctx).flog) {
     return false;
   }
+  console.log(verificationToken(ctx).data.id)
   let res = await DB.find('team', { userId: DB.getID(verificationToken(ctx).data.id), flog: true }, { taskList: false });
+ console.log(res)
   ctx.body = { code: returnCode.success, message: '成功', data: res };
 })
 
@@ -570,6 +572,10 @@ router.post(interfaceNameObj.logout,async (ctx:any)=>{ //注销账号
   }
   returnMsg(ctx,'error','error',null);
 })
+
+
+
+
 
 
 module.exports = router.routes();

@@ -59,14 +59,13 @@ offset第几页，limit每页数量
 {任务团队名称,到期时间(年月日),团队label(一句话)，technology标签(字符串数组)}
 {teamName:'',expireDate:'',teamLabel:'',technologyLabel:''}
                      
- 14、    /tsc/teamAll       所有得团队(待用)
-     {offset:1,limit:10}
+
 
                      
 15、 /tsc/myTeam        我是队长的任务团队
     {}
 
- 16、   /tsc/searchUser     搜索用户，暂时只能是名字，如果绑定了手机号也可以搜索手机号
+16、   /tsc/searchUser     搜索用户，暂时只能是名字，如果绑定了手机号也可以搜索手机号
     {text:'名字或者手机号'}
 
 
@@ -77,13 +76,13 @@ offset第几页，limit每页数量
 
      <!-- /xx/xx            邀请记录接口 -->
 
- 18、   /tsc/beInvited       被邀请记录接口
+18、   /tsc/beInvited       被邀请记录接口
     {userId:''}
     返回的status为空是还未处理，为"1"是已同意，为"0"是已拒绝,为空展示同意和拒绝按钮
     
 
 
- 19、   /tsc/processInvitation  处理邀请
+19、   /tsc/processInvitation  处理邀请
     {status:'1',id:'1',userId:'',teamId:'',username:''}
     status为"1"是同意，"0"是拒绝,id为请求信息的id,userId自己的id，登录有，teamId:团队id，username：''
 
@@ -112,10 +111,10 @@ offset第几页，limit每页数量
      {teamId:'',taskId:''}
 
 
-  25、   /tsc/finishTeamTask  结束某个属于自己的团队任务
+25、   /tsc/finishTeamTask  结束某个属于自己的团队任务
      {teamId:'',taskId:''}
 
-  26、   /tsc/deleteTeamTask     删除某个自己的任务
+26、   /tsc/deleteTeamTask     删除某个自己的任务
      {teamId:'',,taskId:''}
 
 27、  /tsc/getMyTeamTask     获取我创建的团队任务
@@ -127,6 +126,25 @@ offset第几页，limit每页数量
 29、/tsc/setMobile  设置mobile
 
 30、 /tsc/logout   注销账号
+
+
+
+
+
+31、/server/adminLogin  管理员登录（未使用）
+{username:'',pwd:''}
+
+
+32、/server/user  所有用户
+
+
+32、/server/delteUser  删除用户
+  {userId:''}
+
+33、    /server/teamAll       所有得团队
+     {offset:1,limit:10}
+
+
 
 
 

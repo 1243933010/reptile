@@ -250,9 +250,11 @@ router.post(interfaceNameObj.myTeam, function (ctx) { return __awaiter(void 0, v
                 if (!verificationToken(ctx).flog) {
                     return [2 /*return*/, false];
                 }
+                console.log(verificationToken(ctx).data.id);
                 return [4 /*yield*/, DB.find('team', { userId: DB.getID(verificationToken(ctx).data.id), flog: true }, { taskList: false })];
             case 1:
                 res = _a.sent();
+                console.log(res);
                 ctx.body = { code: returnCode.success, message: '成功', data: res };
                 return [2 /*return*/];
         }

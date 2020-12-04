@@ -10,6 +10,7 @@ const cors = require('koa2-cors')
 const api = require('./routes/api');
 const tscApi = require('./routes/tsc/tsc')
 const {writeJson} = require('./module/fnc/fnc')
+const serverApi = require('./routes/server/server');
 
 const app = new Koa();
 const router = new Route();
@@ -28,6 +29,7 @@ app.use(async (ctx,next)=>{
 
 router.use('/api',api);
 router.use('/tsc',tscApi);
+router.use('/server',serverApi);
 app.use(router.routes());//启动路由
 app.use(router.allowedMethods())//加上就完事了
 console.log('已监听3000端口');

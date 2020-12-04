@@ -87,6 +87,7 @@ router.post(interfaceNameObj.login, async (ctx) => {//登录
     try {
       let res = await DB.find('user', { username,status:'1' },{status:0,avatar:0,notice:0,workRecordObj:0});
       if (res.length > 0) {
+       
         let obj = res[0];
         // console.log(res)
         if (obj.pwd === pwd) {
