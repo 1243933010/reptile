@@ -1,7 +1,8 @@
 
 const fs = require('fs');
 const path = require('path');
-
+const tokenConfig = { privateKey: 'yue' };
+const jwt = require('jsonwebtoken');
 
 function getTime(type: String): String {
     if (type === 'yearMonthDay') {
@@ -46,7 +47,17 @@ enum fileSize {
     minFile = 5000000,//5m
     maxFile = 10000000//10m
 }
-function writeJson(ctx: any) {
+interface writeJsonFace{
+    request:{
+        header:{
+            host:number
+        };
+        url:number;
+        body:object;
+    };
+    body:object;
+}
+function writeJson(ctx:writeJsonFace) {
     let url = path.resolve(__dirname, '../info') //获取info文件夹绝对路径
     let files = fs.readdirSync(url);//读取文件夹获取文件名数组
     let filesNum: any = getFilesList(files); //通过上面的函数获取最新的文件夹名字
@@ -73,8 +84,43 @@ function writeJson(ctx: any) {
     })
 }
 
+
+
+enum returnCode {
+    success = 200,
+    tokenFailure = 401,
+    error = 400
+  }
+  function returnMsg(ctx:any,status:any,msg:string,data:any):void{
+    ctx.body = {code:returnCode[status],msg,data}
+  }
+  
+  let verificationToken = (ctx: any): any => {
+    try {
+      const token: String = ctx.get('Authorization');
+      let data: String;
+      if (token === '') {
+        ctx.body = { code: returnCode.error, message: '未登录',data:null};
+        return { flog: false, msg: '未登录', data: null }
+      } else {
+        try {
+          data = jwt.verify(token.split(' ')[1], tokenConfig.privateKey)
+          return { flog: true, data, msg: 'success' }
+        } catch (error) {
+          // console.log(error)
+          ctx.body = { code: returnCode.tokenFailure, message: 'token过期',data:null};
+          return { flog: false, msg: 'token过期', data: null }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 module.exports = {
     getTime,
     getNowDate,
-    writeJson
+    writeJson,
+    returnMsg,
+    verificationToken,
+    returnCode
 }

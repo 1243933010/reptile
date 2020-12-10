@@ -1398,3 +1398,493 @@ url:/favicon.ico
 response:"404 Not found" 
  
  
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 14:53:14 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4MzE5NCwiZXhwIjoxNjA4MTg3OTk0fQ.jzblZs-0d6cieRwDbPtkPNhATqLRMkgVpJ9oep-vesU"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 14:53:28 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4MzIwOCwiZXhwIjoxNjA4MTg4MDA4fQ.hnvbgDq1_mEHpJ4sxIMqo9AiTto9EDanZyKcyU-m8gc"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 14:59:38 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4MzU3OCwiZXhwIjoxNjA4MTg4Mzc4fQ.zHVti0QOOMvoyDQiRi40WyxVSRhK75mfSz37bqwvFTM"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:1:9 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4MzY2OSwiZXhwIjoxNjA4MTg4NDY5fQ.KcLWpE-ajZQFU_qdks2ptGlMiX8K3uzQ7-xIilPdav8"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:1:23 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4MzY4MywiZXhwIjoxNjA4MTg4NDgzfQ.ukZRccGC_mGLQ50JJ_MRaAfHymGxXSjOUjvFQdMOONw"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:1:49 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4MzcwOSwiZXhwIjoxNjA4MTg4NTA5fQ.jZt8cSSn0e99ol-RN3yWA9bo8hquXWol7TCCDs3esfo"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:2:8 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4MzcyOCwiZXhwIjoxNjA4MTg4NTI4fQ.o-1GzhGgBXRxzXotquuvtVl_ATiQT2qS5FFEo8eMhi0"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:3:45 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4MzgyNSwiZXhwIjoxNjA4MTg4NjI1fQ.HB_JazXBgSnEW4lKEz-QryxehbE4skl2XNuR68K75mE"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:3:47 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4MzgyNywiZXhwIjoxNjA4MTg4NjI3fQ.VBdpjsrIQMSo7g1FlOdYyRj-ubIqfWj7UAcLpgogOQE"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:4:10 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4Mzg1MCwiZXhwIjoxNjA4MTg4NjUwfQ.sBROgfB0MMw1oKVLzWDh_YuKGzJ8BuMdJVS_4PMJcDs"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:4:13 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4Mzg1MywiZXhwIjoxNjA4MTg4NjUzfQ.Jr-5QoPw2F_CHsZ_tVfM_ycyhSwcXbxxRZobsJQecc4"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:4:54 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4Mzg5NCwiZXhwIjoxNjA4MTg4Njk0fQ.3Aya_7RiPMzBKFPPNyolsDrBYxe5v5qJoEu0qlhEXjo"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:4:56 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4Mzg5NiwiZXhwIjoxNjA4MTg4Njk2fQ.su3oJyV0lGNhN39lXOguohw6EChWbdDQb1zS2y8gzpI"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:7:6 
+url:/api/login 
+response:{"code":400,"message":"未登录","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:7:8 
+url:/api/login 
+response:{"code":400,"message":"未登录","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:7:40 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4NDA2MCwiZXhwIjoxNjA4MTg4ODYwfQ.We4Tt-cexP6y3SOsbw6H-j9mv1c_iA99vOODuv6r394"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:8:7 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4NDA4NywiZXhwIjoxNjA4MTg4ODg3fQ.ZjYyG1JlDPkEn3pcv-geh8HWykNsqivs5JXlvW5EbnU"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:10:37 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4NDIzNywiZXhwIjoxNjA4MTg5MDM3fQ.FWPezdRXWL6NwtB07Bzxe33q8kKsTVPEWZmdHikRgC0"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:10:45 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4NDI0NSwiZXhwIjoxNjA4MTg5MDQ1fQ.YXUF5XfaQABt6VPa4nAQB0bauIX4COUyYYgJ21W0i9E"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:12:2 
+url:/api/login 
+response:{"code":400,"message":"未登录","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:12:12 
+url:/api/login 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:16:34 
+url:/api/login 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:22:17 
+url:/api/login 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:22:44 
+url:/api/login 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:24:54 
+url:/api/login 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:25:2 
+url:/api/login 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:27:7 
+url:/api/login 
+response:"404 Not found" 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:27:58 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4NTI3OCwiZXhwIjoxNjA4MTkwMDc4fQ.hMKvMMFF1PaKarOlQMO_JmpQL08NwPG6ydVAAIfhXDk"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:28:8 
+url:/api/login 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:28:14 
+url:/api/login 
+response:{"code":400,"message":"未登录","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:28:31 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4NTMxMSwiZXhwIjoxNjA4MTkwMTExfQ.WzkmQ9tuiI5bZiouppR_co2Yz9D3L-Q4cXnS9SF2oTI"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:28:43 
+url:/tsc/myTeam 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:28:53 
+url:/tsc/myTeam 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:30:44 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4NTQ0NCwiZXhwIjoxNjA4MTkwMjQ0fQ.0omcHru-tu5WuH6hFnxv6dW1hTVZ6B4RbvYWKG2R9aQ"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:31:1 
+url:/tsc/myTeam 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:31:33 
+url:/tsc/myTeam 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:31:53 
+url:/tsc/myTeam 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:32:21 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:32:31 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:32:56 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:33:30 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:34:53 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:34:56 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4NTY5NiwiZXhwIjoxNjA4MTkwNDk2fQ.ubinrdTHzQ122fKNTDYETN5ayBIYUq_aJlbwXLEk2PY"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:34:58 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4NTY5OCwiZXhwIjoxNjA4MTkwNDk4fQ.AIF-qd9PcIdXDH-qwIGWxcqVNDSCTvpTZuNe1KqOjVA"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:35:4 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:35:12 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:35:23 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:35:46 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:37:42 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:37:48 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:37:49 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:38:0 
+url:/tsc/myTeam 
+response:{"code":400,"message":"未登录","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:38:4 
+url:/tsc/myTeam 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:38:12 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"userId":"5fc0b6d93e7df42bd450cb7c","useranme":"yue"} 
+time:2020-12-10 15:40:16 
+url:/tsc/myTeam 
+response:{"code":200,"message":"成功","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 15:40:19 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4NjAxOSwiZXhwIjoxNjA4MTkwODE5fQ.wTeDOhTpmnfNjaBwuWP82egheVY5fryELa5W08MCa8Q"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{} 
+time:2020-12-10 15:43:3 
+url:/server/user 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{} 
+time:2020-12-10 15:43:13 
+url:/server/user 
+response:{"code":401,"msg":"token过期","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{} 
+time:2020-12-10 15:43:19 
+url:/server/user 
+response:{"code":200,"msg":"success","data":[{"_id":"5fc7675552969e15d435270d","username":"yue","pwd":"123456","avatar":"http:192.168.0.75:3000/imgs/1604565232439.png","mobile":"","status":"1","authority":"admin"},{"_id":"5fc76a2fce08ae35ec6d3548","username":"shen","pwd":"123456","avatar":"http:192.168.0.75:3000/imgs/1604565232439.png","mobile":"","status":"1"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{} 
+time:2020-12-10 15:49:18 
+url:/server/teamAll 
+response:{"code":200,"msg":"success","data":[{"_id":"5fc9d9e980153d44c4c42418","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064041770,"createDay":"2020-12-4","flog":true,"id":1,"taskList":[],"memberList":[],"userId":"5fc7675552969e15d435270d"},{"_id":"5fc9dcde11b947394c04abc3","teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607064798727,"createDay":"2020-12-4","flog":true,"id":2,"taskList":[],"memberList":[],"userId":"5fc7675552969e15d435270d"}]} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"teamName":"test2","expireDate":"2020-12-28","teamLabel":"这是一句话","technologyLabel":"['node']","createTime":1607587355707,"createDay":"2020-12-10","flog":true,"id":3,"taskList":[],"memberList":[],"userId":"5fc7675552969e15d435270d","_id":"5fd1d61b8ebcc0524c63cb45"} 
+time:2020-12-10 16:2:35 
+url:/tsc/createTeam 
+response:{"code":200,"message":"创建成功","data":null} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 16:15:12 
+url:/api/login 
+response:{"code":400,"message":{}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 16:17:29 
+url:/api/login 
+response:{"code":400,"message":{}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 16:17:51 
+url:/api/login 
+response:{"code":400,"message":{}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 16:17:52 
+url:/api/login 
+response:{"code":400,"message":{}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 16:17:53 
+url:/api/login 
+response:{"code":400,"message":{}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 16:18:8 
+url:/api/login 
+response:{"code":400,"message":{}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 16:18:41 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4ODMyMSwiZXhwIjoxNjA4MTkzMTIxfQ.GhaW5SFwwRSX7_LtG7oMBMu1pEDysXiPppQ0zN8q9Qw"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{"username":"yue","pwd":"123456"} 
+time:2020-12-10 16:19:47 
+url:/api/login 
+response:{"code":200,"message":"成功","data":{"userinfo":{"_id":"5fc7675552969e15d435270d","username":"yue","mobile":"","authority":"admin","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzc2NzU1NTI5NjllMTVkNDM1MjcwZCIsImlhdCI6MTYwNzU4ODM4NywiZXhwIjoxNjA4MTkzMTg3fQ.XQukRTnwIqgGvAdvzwFj3qP9r2LauBUNsmcAMPZCOpA"}}} 
+ 
+ 
+host:192.168.0.75:3000 
+body:{} 
+time:2020-12-10 16:20:27 
+url:/server/user 
+response:{"code":200,"msg":"success","data":[{"_id":"5fc7675552969e15d435270d","username":"yue","pwd":"123456","avatar":"http:192.168.0.75:3000/imgs/1604565232439.png","mobile":"","status":"1","authority":"admin"},{"_id":"5fc76a2fce08ae35ec6d3548","username":"shen","pwd":"123456","avatar":"http:192.168.0.75:3000/imgs/1604565232439.png","mobile":"","status":"1"}]} 
+ 
+ 

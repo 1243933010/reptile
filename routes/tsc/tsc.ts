@@ -6,56 +6,12 @@ const multer = require('koa-multer');//加载koa-multer模块
 const fnc = require('../../module/fnc/fnc');
 const interfaceNameObj = require('../../module/interfaceName');
 
-let { getTime } = fnc;
+let { getTime,returnMsg,verificationToken,returnCode } = fnc;
 
 const router = new Router();
 
-interface verificationTokenTyep {
-  get: Function
-}
-interface interfaceType {
-  body: Object
-}
-enum returnCode {
-  success = 200,
-  tokenFailure = 401,
-  error = 400
-}
-function returnMsg(ctx:any,status:any,msg:string,data:any):void{
-  ctx.body = {code:returnCode[status],msg,data}
-}
-
-let verificationToken = (ctx: any): any => {
-  try {
-    const token: String = ctx.get('Authorization');
-    let data: String;
-    if (token === '') {
-      ctx.body = { code: returnCode.error, message: '未登录',data:null};
-      return { flog: false, msg: '未登录', data: null }
-    } else {
-      try {
-        data = jwt.verify(token.split(' ')[1], tokenConfig.privateKey)
-        return { flog: true, data, msg: 'success' }
-      } catch (error) {
-        // console.log(error)
-        ctx.body = { code: returnCode.tokenFailure, message: 'token过期',data:null};
-        return { flog: false, msg: 'token过期', data: null }
-      }
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-
-
 
 router.post(interfaceNameObj.notice, async (ctx: any) => {//创建、删除、修改状态消息提示记录
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
-
   let { offset, limit } = ctx.request.body;
   if (!offset || offset <= 0) { ctx.body = { code: returnCode.error, message: 'offset 错误', data: null }; return false };
   if (!limit || limit <= 0) { ctx.body = { code: returnCode.error, message: 'limit 错误', data: null }; return false };
@@ -92,9 +48,6 @@ router.post(interfaceNameObj.notice, async (ctx: any) => {//创建、删除、�
 
 
 router.post(interfaceNameObj.unread, async (ctx: any) => {//获取未读消息数量
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let data = await DB.find('user', { _id:DB.getID(verificationToken(ctx).data.id) });
   for (let i of data[0].notice) {
     if (!i.flog) {
@@ -107,9 +60,6 @@ router.post(interfaceNameObj.unread, async (ctx: any) => {//获取未读消息�
 
 
 router.post(interfaceNameObj.changePwd, async (ctx: any) => { //修改密码
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let data = await DB.find('user', { _id:DB.getID(verificationToken(ctx).data.id) });
   let obj = data[0];
   let { pwd, newPwd } = ctx.request.body;
@@ -128,9 +78,6 @@ router.post(interfaceNameObj.changePwd, async (ctx: any) => { //修改密码
 
 
 router.post(interfaceNameObj.createTeam, async (ctx: any) => { //创建团队
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   ctx.request.body.createTime = new Date().getTime();
   ctx.request.body.createDay = getTime('yearMonthDay'); //创建年月日
   ctx.request.body.flog = true;  //是否解散(默认true)
@@ -151,33 +98,22 @@ router.post(interfaceNameObj.createTeam, async (ctx: any) => { //创建团队
 
 
 router.post(interfaceNameObj.teamAll, async (ctx: any) => {   //所有得团队
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let res = await DB.find('team', {}, { _id: 0 }, Number(ctx.request.body.offset), Number(ctx.request.body.limit));
-  console.log(res)
+  // console.log(res)
   ctx.body = { code: returnCode.success, message: '成功', data: res };
 })
 
 
 router.post(interfaceNameObj.myTeam, async (ctx: any) => {   //我的团队
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
-  console.log(verificationToken(ctx).data.id)
   let res = await DB.find('team', { userId: DB.getID(verificationToken(ctx).data.id), flog: true }, { taskList: false });
- console.log(res)
   ctx.body = { code: returnCode.success, message: '成功', data: res };
 })
 
 
 router.post(interfaceNameObj.searchUser, async (ctx: any) => {   //搜索用户
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let { text } = ctx.request.body;
   let [res,...a] = await DB.find('user', { username: text,status:'1' }, { pwd: 0, workRecordObj: 0, notice: 0 });
-  console.log(res)
+  // console.log(res)
   if (res) {
     if(res._id.toString()===verificationToken(ctx).data.id){
       returnMsg(ctx,'error','不能搜索自己的账号',null);
@@ -193,15 +129,9 @@ router.post(interfaceNameObj.searchUser, async (ctx: any) => {   //搜索用户
 
 
 router.post(interfaceNameObj.inviteJoin, async (ctx: any) => {   //邀请加入(内部有未验证标注)
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let { userId, teamId, inviteId } = ctx.request.body;
   let message = '';
   let teamData = await DB.find('team', { id: Number(teamId) });
-  // console.log(teamData[0].userId,userId,'----205')
-  // console.log( teamData[0].userId!=userId,'----206')
-  // console.log(ctx.request.body,'----207')
   if (teamData[0].userId != userId) {
     ctx.body = { code: returnCode.error, message: '你不是该团队的队长', data: null };
     return false;
@@ -247,9 +177,6 @@ router.post(interfaceNameObj.inviteJoin, async (ctx: any) => {   //邀请加入(
 
 
 router.post(interfaceNameObj.beInvited, async (ctx: any) => { //被邀请记录接口
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let { userId } = ctx.request.body;
   let history = await DB.find('inviteJoinHistory', { userId }, { _id: 0, userId: 0 });
   if (history.length) {
@@ -261,9 +188,6 @@ router.post(interfaceNameObj.beInvited, async (ctx: any) => { //被邀请记录�
 
 
 router.post(interfaceNameObj.processInvitation, async (ctx: any) => {  //处理邀请
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let { id, status, userId, teamId, username } = ctx.request.body;
   let data = await DB.find('inviteJoinHistory', { userId })
   // console.log(data)
@@ -297,22 +221,16 @@ router.post(interfaceNameObj.processInvitation, async (ctx: any) => {  //处理�
 })
 
 router.post(interfaceNameObj.participateTeam, async (ctx: any) => {  //我参与的团队
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let { userId } = ctx.request.body
 
-  console.log(ctx.request.body)
+  // console.log(ctx.request.body)
   let data = await DB.find('team', { "memberList.userId": userId }, { _id: 0, flog: 0, taskList: 0, memberList: 0, userId: 0 });
-  console.log(data)
+  // console.log(data)
   ctx.body = { code: returnCode.success, message: 'success', data };
 })
 
 
 router.post(interfaceNameObj.deleteTeam, async (ctx: any) => { //逻辑删除团队
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let { teamId } = ctx.request.body;
   let data = await DB.update('team', { id: Number(teamId) }, { flog: false });
   if (data.result.n) {
@@ -330,9 +248,6 @@ router.post(interfaceNameObj.deleteTeam, async (ctx: any) => { //逻辑删除团
  * 任务是否领取状态isReceive(0未领取)、是否逻辑删除flog(默认为true) 
  */
 router.post(interfaceNameObj.createTeamWork,async (ctx:any)=>{  //创建团队任务
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let {teamId} = ctx.request.body;
   let [team,...a] = await DB.find('team',{id:Number(teamId)});
   ctx.request.body.createTime = new Date().getTime();
@@ -362,11 +277,8 @@ router.post(interfaceNameObj.createTeamWork,async (ctx:any)=>{  //创建团队�
  * 
  */
 router.post(interfaceNameObj.receiveTask, async(ctx:any)=>{  // 领取未被领取的任务(队长队员都可领取)
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let {teamId,taskId} = ctx.request.body;
-  console.log(teamId);
+  // console.log(teamId);
   let [data,...a] = await DB.find('team',{id:Number(teamId)});
   data.taskList.forEach((val:any,ind:number) => {
     if(val.taskId===Number(taskId)){
@@ -387,9 +299,6 @@ router.post(interfaceNameObj.receiveTask, async(ctx:any)=>{  // 领取未被领�
  * 
  */
 router.post(interfaceNameObj.finishTeamTask,async (ctx:any)=>{ //结束某个属于自己的团队任务
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let {teamId,taskId} = ctx.request.body;
   // console.log(teamId,userId);
   let [data,...a] = await DB.find('team',{id:Number(teamId)});
@@ -439,9 +348,6 @@ router.post(interfaceNameObj.finishTeamTask,async (ctx:any)=>{ //结束某个属
  * {teamId:'',taskId:'',userId:'';}
  */
 router.post(interfaceNameObj.deleteTeamTask,async (ctx:any)=>{ //删除某个自己的任务
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let {teamId,taskId} = ctx.request.body;
   // console.log(teamId,userId);
   let [data,...a] = await DB.find('team',{id:Number(teamId)});
@@ -490,9 +396,6 @@ router.post(interfaceNameObj.deleteTeamTask,async (ctx:any)=>{ //删除某个自
  * 
  */
 router.post(interfaceNameObj.getMyTeamTask,async (ctx:any)=>{ //获取我创建的团队任务
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let {status} = ctx.request.body;
   
   let data = await DB.find('team',{'taskList.userId':verificationToken(ctx).data.id},{taskList:true});
@@ -512,9 +415,6 @@ router.post(interfaceNameObj.getMyTeamTask,async (ctx:any)=>{ //获取我创建�
 
 
 router.post(interfaceNameObj.transfer,async (ctx:any)=>{ //转让团队给其他队友，转让不需要对方同意
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let {teamId,teammateId} = ctx.request.body;
   let [data,...a] = await DB.find('team',{id:Number(teamId)});
   if(verificationToken(ctx).data.id !== data.userId.toString()){
@@ -533,9 +433,6 @@ router.post(interfaceNameObj.transfer,async (ctx:any)=>{ //转让团队给其他
 
 
 router.post(interfaceNameObj.setLabel,async (ctx:any)=>{ //设置添加技能标签
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let {labelList} = ctx.request.body;
   let status = await DB.update('user',{_id:DB.getID(verificationToken(ctx).data.id)},{labelList})
   if(status.result.n){
@@ -547,9 +444,6 @@ router.post(interfaceNameObj.setLabel,async (ctx:any)=>{ //设置添加技能标
 
 
 router.post(interfaceNameObj.setMobile,async (ctx:any)=>{ //设置mobile
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
   let {mobile} = ctx.request.body;
   let status = await DB.update('user',{_id:DB.getID(verificationToken(ctx).data.id)},{mobile})
   if(status.result.n){
@@ -561,10 +455,6 @@ router.post(interfaceNameObj.setMobile,async (ctx:any)=>{ //设置mobile
 
 
 router.post(interfaceNameObj.logout,async (ctx:any)=>{ //注销账号
-  if (!verificationToken(ctx).flog) {
-    return false;
-  }
-  console.log(verificationToken(ctx).data.id)
   let userStatus = await DB.update('user',{_id:DB.getID(verificationToken(ctx).data.id)},{status:'0'});
   if(userStatus.result.n){
     returnMsg(ctx,'success','success',null);

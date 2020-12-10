@@ -1,3 +1,7 @@
+const tokenConfig = { privateKey: 'yue' };
+const jwt = require('jsonwebtoken');
+const DB = require('../module/db')
+
 function getIPAdress() {//获取当前的ip地址
     var interfaces = require('os').networkInterfaces();
     for (var devName in interfaces) {
@@ -133,6 +137,48 @@ function unique(arr){  //数组去重
     return Array.from(new Set(arr));
 }
 
+let returnCode ={
+    success :200,
+    tokenFailure : 401,
+    error : 400
+  }
+
+let verificationToken = async(ctx)=> {
+    try {
+      const token = ctx.get('Authorization');
+      if (token === '') {
+        ctx.body = { code: returnCode.error, message: '未登录',data:null};
+        return false
+      } else {
+        try {
+          let data = jwt.verify(token.split(' ')[1], tokenConfig.privateKey)
+          let status = await DB.find('user',{_id:DB.getID(data.id)});
+          if(status){
+              return true
+          }else{
+              returnMsg(ctx,'success','该账号没有权限操作',null);
+              return false
+          }        
+        } catch (error) {
+          returnMsg(ctx,'tokenFailure','token过期',null);
+          return false
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  function returnMsg(ctx,status,msg,data){
+    ctx.body = {code:returnCode[status],msg,data}
+  }
+
+
+let whitelist =[  //白名单接口
+    '/api/login',
+    '/api/upload'
+]
+
+
 
 module.exports = {
     getIPAdress,
@@ -140,5 +186,7 @@ module.exports = {
     getSevenTime,
     getList,
     quickOrder,
-    unique
+    unique,
+    verificationToken,
+    whitelist
 }

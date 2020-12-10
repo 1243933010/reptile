@@ -1,6 +1,8 @@
 "use strict";
 var fs = require('fs');
 var path = require('path');
+var tokenConfig = { privateKey: 'yue' };
+var jwt = require('jsonwebtoken');
 function getTime(type) {
     if (type === 'yearMonthDay') {
         return getYearMonthDay();
@@ -65,8 +67,44 @@ function writeJson(ctx) {
         // console.log('写入完成')
     });
 }
+var returnCode;
+(function (returnCode) {
+    returnCode[returnCode["success"] = 200] = "success";
+    returnCode[returnCode["tokenFailure"] = 401] = "tokenFailure";
+    returnCode[returnCode["error"] = 400] = "error";
+})(returnCode || (returnCode = {}));
+function returnMsg(ctx, status, msg, data) {
+    ctx.body = { code: returnCode[status], msg: msg, data: data };
+}
+var verificationToken = function (ctx) {
+    try {
+        var token = ctx.get('Authorization');
+        var data = void 0;
+        if (token === '') {
+            ctx.body = { code: returnCode.error, message: '未登录', data: null };
+            return { flog: false, msg: '未登录', data: null };
+        }
+        else {
+            try {
+                data = jwt.verify(token.split(' ')[1], tokenConfig.privateKey);
+                return { flog: true, data: data, msg: 'success' };
+            }
+            catch (error) {
+                // console.log(error)
+                ctx.body = { code: returnCode.tokenFailure, message: 'token过期', data: null };
+                return { flog: false, msg: 'token过期', data: null };
+            }
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
 module.exports = {
     getTime: getTime,
     getNowDate: getNowDate,
-    writeJson: writeJson
+    writeJson: writeJson,
+    returnMsg: returnMsg,
+    verificationToken: verificationToken,
+    returnCode: returnCode
 };

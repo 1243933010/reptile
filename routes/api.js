@@ -1,14 +1,11 @@
-// const Koa = require('koa');
-// const MongoClient = require('mongodb').MongoClient;
 const DB = require('../module/db')
-const jwt = require('jsonwebtoken');
 const Router = require('koa-router');
-const tokenConfig = { privateKey: 'yue' };
 const multer = require('koa-multer');//加载koa-multer模块
 const util = require('../module/util');
 const interfaceNameObj = require('../module/interfaceName');
 const url = require('../module/config')
-
+const tokenConfig = { privateKey: 'yue' };
+const jwt = require('jsonwebtoken');
 // const { Db } = require('mongodb');
 
 const router = new Router();
@@ -30,38 +27,14 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage });//调用
 
-let verificationToken = (ctx) => {//验证token
-  try {
-    const token = ctx.get('Authorization');
-    let data;
-    if (token === '') {
-      return { flog: false, msg: '未登录' }
-    } else {
-      try {
-        data = jwt.verify(token.split(' ')[1], tokenConfig.privateKey)
-        return { flog: true, data }
-      } catch (error) {
-        // console.log(error)
-        return { flog: false, msg: 'token过期' }
-      }
-    }
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 
 
 router.post(interfaceNameObj.updateProfile, async (ctx) => {//更新头像名字
-  if (!verificationToken(ctx).flog) {
-    ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
-    return
-  }
   let {username, avatar } = ctx.request.body;
   
   if (username) {
     let updateData = await DB.update('user', { _id:DB.getID(verificationToken(ctx).data.id)}, { username });
-    console.log(verificationToken(ctx).data.id)
+    // console.log(verificationToken(ctx).data.id)
     if (updateData.result.n) {
       ctx.body = { code: 200, message: '更改名字成功', data: null };
     } else {
@@ -102,6 +75,7 @@ router.post(interfaceNameObj.login, async (ctx) => {//登录
         ctx.body = { code: 400, message: '未找到账号' };
       }
     } catch (error) {
+      console.log(error)
       ctx.body = { code: 400, message: error };
     }
   }
@@ -110,12 +84,6 @@ router.post(interfaceNameObj.login, async (ctx) => {//登录
 })  
 
 router.post(interfaceNameObj.registered, async (ctx) => {//注册
-  // console.log(ctx.request.body);
-  // console.log(getIPAdress());
-  if (!ctx.request.body.username) {
-    ctx.body = { code: 400, message: '请填写用户名' };
-    return false;
-  }
   if (!ctx.request.body.pwd) {
     ctx.body = { code: 400, message: '请填写密码' };
     return false;
@@ -136,16 +104,10 @@ router.post(interfaceNameObj.registered, async (ctx) => {//注册
   } else {
     ctx.body = { code: 400, message: '出现错误', data: null };
   }
-  // console.log(status)
-  // console.log('111')
 }) 
 
 
 router.post(interfaceNameObj.updateMessage, async (ctx) => {//更新工作内容(暂未使用)
-  if (!verificationToken(ctx).flog) {
-    ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
-    return
-  }
   let time = new Date().getTime();
   // console.log(time);
   // console.log(ctx.request.body);
@@ -154,10 +116,6 @@ router.post(interfaceNameObj.updateMessage, async (ctx) => {//更新工作内容
 
 
 router.post(interfaceNameObj.addWorkContent, async (ctx) => {//添加工作内容
-  if (!verificationToken(ctx).flog) {
-    ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
-    return
-  }
   let { workText, estimatedTime } = ctx.request.body;
   if (!workText) {ctx.body = { code: 400, message: '工作内容不能为空' };return false;}
   if (!estimatedTime) {ctx.body = { code: 400, message: '工作时长不能为空' };return false;}
@@ -198,10 +156,6 @@ router.post(interfaceNameObj.addWorkContent, async (ctx) => {//添加工作内�
 
 
 router.post(interfaceNameObj.workDay, async (ctx) => {//获取某天得添加记录
-  if (!verificationToken(ctx).flog) {
-    ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` };
-    return false;
-  }
   let time = new Date(ctx.request.body.time).getTime();
   let res = await DB.find('user', { _id:DB.getID(verificationToken(ctx).data.id) });
   // console.log(res)
@@ -223,10 +177,6 @@ router.post(interfaceNameObj.workDay, async (ctx) => {//获取某天得添加记
 
 
 router.post(interfaceNameObj.setWork, async (ctx) => {//修改状态
-  if (!verificationToken(ctx).flog) {
-    ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
-    return
-  }
   let data = await DB.find('user', { _id:DB.getID(verificationToken(ctx).data.id) });
 
   let msgObj = {createTime:new Date(),message:'你修改了工作状态',flog:false};
@@ -264,11 +214,6 @@ router.post(interfaceNameObj.setWork, async (ctx) => {//修改状态
 
 
 router.post(interfaceNameObj.deleteWork, async (ctx) => {//删除某条数据
-  // console.log(ctx.request.body);
-  if (!verificationToken(ctx).flog) {
-    ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
-    return
-  }
   let data = await DB.find('user', {_id:DB.getID(verificationToken(ctx).data.id) });
   // console.log(data[0].workRecordObj[ctx.request.body.time])
   let msgObj = {createTime:new Date(),message:'你删除了一项工作',flog:false};
@@ -294,7 +239,7 @@ router.post(interfaceNameObj.deleteWork, async (ctx) => {//删除某条数据
     } else {
       ctx.body = { code: 400, message: '删除错误', data: null }
     }
-    console.log(arr)
+    // console.log(arr)
   } else {
     ctx.body = { code: 400, message: '没找到数据', data: null };
   }
@@ -303,10 +248,6 @@ router.post(interfaceNameObj.deleteWork, async (ctx) => {//删除某条数据
 
 
 router.post(interfaceNameObj.sevenDayWork, async (ctx) => {//获取当前起七天内得数据(所有，已完成，未完成)
-  if (!verificationToken(ctx).flog) {
-    ctx.body = { code: 401, message: `${verificationToken(ctx).msg}` }
-    return
-  }
   let data = await DB.find('user', { _id:DB.getID(verificationToken(ctx).data.id) });
   
   let list = getList(getSevenTime(),data[0].workRecordObj,ctx.request.body.type);
